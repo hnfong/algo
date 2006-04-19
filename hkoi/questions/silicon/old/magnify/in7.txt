@@ -1,0 +1,20 @@
+60 20 3
+       AAAAAAAAAA      BBBBBBBBBBBBBBBB       CCCCCCCCC     
+     AA          AA            BB            CC        CC   
+   AA                          BB          CCC           C  
+  A                            BB          C             CC 
+  A                            BB         CC                
+  A                            BB        CC                 
+  A                            BB        CC                 
+   AA                          BB        CC                 
+     AA                        BB        CC                 
+       AAAAAAA                 BB        CC                 
+              AA               BB        CC                 
+                AA             BB        CC                 
+                  A            BB        CC                 
+                  A     BB     BB        CCC                
+                  A     BB     BB         CC                
+                  A     BB     BB          C             CC 
+                AA      BB     BB          CCC           C  
+  AA          AA         BB   BBB            CC        CC   
+    AAAAAAAAAA            BBBBBB              CCCCCCCCC     

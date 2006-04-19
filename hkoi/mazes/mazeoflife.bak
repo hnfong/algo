@@ -1,0 +1,238 @@
+// #include <ncurses.h>
+#include <stdio.h>
+#include <string.h>
+
+#define printw(...)
+#define getch()
+#define refresh()
+#define initscr()
+#define noecho()
+#define keypad(...)
+#define endwin()
+#define move(...)
+#define clear(...)
+
+#define MAX_SIZ 10
+
+int map[MAX_SIZ][MAX_SIZ];
+
+int dir[9][2] = {
+	{-1,-1}, {-1,0}, {-1,1},
+	{0,-1}, {0,1}, {1,-1},
+	{1,0}, {1,1}, {0,0}
+};
+
+int n,m;
+int enda,endb;
+//int mypos_i,mypos_j;
+int si[1000];
+int sj[1000];
+int sp = -1;
+
+void init_curses() {
+	initscr();
+	noecho(); /*raw();*/
+	keypad(stdscr,true);
+};
+
+void end_curses() {
+	endwin();
+};
+
+void waitanykey() {
+	printw("Press any key: ...");
+	refresh();
+	getch();
+	printw("\n");
+};
+
+void dumpmapx(int a[MAX_SIZ][MAX_SIZ], int y, int x) {
+	move(y,x);
+	for (int i = 0; i < n ; i++ ) {
+		for (int j = 0 ; j < m ; j ++)  {
+			printw("%c", a[i][j]);
+		};
+		printw("\n");
+	};
+	refresh();
+};
+
+void dumpmap() {
+	dumpmapx(map, 0, 0);
+};
+
+
+int init_algo() {
+	for (int i = 0 ; i < MAX_SIZ; i ++ ) { for (int j = 0 ; j < MAX_SIZ; j ++ ) { map[i][j] = '.'; }; };
+	FILE *fp;
+	fp = fopen("mazeoflife.txt", "r");
+	if (fp == NULL) { return -1; };
+	fscanf(fp,"%d", &n);
+	fscanf(fp, "%d", &m);
+	fgetc(fp); //eat the line;
+	for (int i = 0; i < n ; i++ ) {
+		for (int j = 0 ; j < m ; j ++)  {
+			map[i][j] = fgetc(fp);
+			if (map[i][j] == '!') {
+				// treat the end point as empty spot
+				map[i][j] = '.';
+				enda = i;
+				endb = j;
+			};
+			if (map[i][j] == 'X') {
+				sp++;
+				si[sp]=i;
+				sj[sp]=j;
+			};
+		};
+
+		fgetc(fp); // eat the line;
+	};
+	fclose(fp);
+	dumpmap();
+	return 0;
+};
+
+void sim() {
+	int w[MAX_SIZ][MAX_SIZ];
+	for (int i = 0; i < n ; i ++ ) {
+		for (int j = 0 ; j < m ; j ++ )  {
+			w[i][j] = '.';
+			int mine = 0;
+			int theirs = 0;
+			for (int d = 0 ; d < 8; d++ ) {
+				int x = i+dir[d][0];
+				int y = j+dir[d][1];
+				if ( x >= 0 && x < n && y >= 0 && y < m ) {
+					if (map[x][y] == 'X') { mine++ ; };
+					if (map[x][y] == '@') { theirs++ ; };
+				};
+			};
+			switch (map[i][j]) {
+				case '.':
+					if (mine+theirs == 3) {
+						if (mine > theirs) {
+							throw(0);
+							w[i][j] = 'X';
+						} else {
+							w[i][j] = '@';
+						};
+					};
+					break;
+				default:
+					// have stuff
+					if (mine+theirs != 3 && mine+theirs != 2) {
+						w[i][j] = '.';
+					} else {
+						w[i][j] = map[i][j];
+					};
+					break;
+			};
+		};
+	};
+	memcpy(map,w,sizeof(w));
+};
+
+
+bool push_move(int new_i, int new_j) {
+	if (map[new_i][new_j] != '.' && map[new_i][new_j] != 'X') {
+		return false;
+	};
+	int z = 0;
+	for (int d = 0 ; d < 8; d++ ) {
+		int x = new_i+dir[d][0];
+		int y = new_j+dir[d][1];
+		if ( x >= 0 && x < MAX_SIZ && y >= 0 && y < MAX_SIZ ) {
+			if (map[x][y] == '@') { z++ ; };
+		};
+	};
+	if (z!= 2 && z!= 3) { return false; };
+
+	if (map[si[sp]][sj[sp]] != 'X') {
+		printw("%d %d %d %d %c\n", new_i, new_j, si[sp],sj[sp], map[si[sp]][sj[sp]] );
+		refresh();
+		throw(0);
+	};
+	map[si[sp]][sj[sp]] = '.';
+	sp ++;
+	si[sp] = new_i;
+	sj[sp] = new_j;
+	map[si[sp]][sj[sp]] = 'X';
+	return true;
+};
+
+bool pop_move() {
+	map[si[sp]][sj[sp]] = '.';
+	sp--;
+	map[si[sp]][sj[sp]] = 'X';
+	return true;
+};
+
+int depth = 0;
+int limit = 0;
+
+int search(int loc_i, int loc_j) {
+	// check if the new location is sane
+	if (! (loc_i >= 0 && loc_i < n && loc_j >= 0 && loc_j < m)) { return -1; };
+
+	// store the stuff temporarily
+	int w[MAX_SIZ][MAX_SIZ];
+	memcpy(w, map, sizeof(map));
+
+	// if can't move then forget it
+	if (! push_move(loc_i,loc_j) ) { return -1 ; };
+
+	// if this is the move then great!
+	if (loc_i == enda && loc_j == endb) { dumpmap(); return 1; };
+	depth ++;
+
+	if (depth < limit) {
+		sim();
+		//dumpmap(); getch();
+		for (int i = 0 ; i < 9 ; i++ ) {
+			if ( search(loc_i + dir[i][0], loc_j + dir[i][1]) == 1) {
+				return 1;
+			};
+		};
+	};
+
+	depth--;
+	pop_move();
+	memcpy(map, w, sizeof(map));
+	return 0;
+};
+
+int main() {
+	init_curses();
+	clear();
+	if (init_algo() == -1) { 
+		end_curses();
+		printf("Error detected.");
+	};
+
+	/*int k ;
+	while ( (k = getch()) != 'q') {
+		sim();
+		dumpmap();
+	};*/
+
+	bool found = false;
+	for (limit = 1 ; limit < 100; limit ++ ) {
+		for (int i = 0 ; i < 9 ; i++ ) {
+			if (search(si[sp] + dir[i][0], sj[sp] + dir[i][1]) == 1) { found = true; break; };
+		};
+		if (found) break;
+	};
+
+	getch();
+	end_curses(); 
+	
+	if (not found) {
+		printf("No moves < 100...\n");
+	} else 
+		for (int i = 0 ; i <= sp; i++ ) {
+			printf("%d %d\n", si[i]+1, sj[i]+1);
+		};
+	return 0;
+};
+

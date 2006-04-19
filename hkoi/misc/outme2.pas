@@ -1,0 +1,1 @@
+const s='const s='; var i : longint; begin for i := 1 to 9 do write(s[i]); for i := 1 to length(s) do write(s[i]); for i := 10 to length(s) do write(s[i]); writeln; end.; var i : longint; begin for i := 1 to 9 do write(s[i]); for i := 1 to length(s) do write(s[i]); for i := 10 to length(s) do write(s[i]); writeln; end.

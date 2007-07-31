@@ -51,7 +51,7 @@ char *moves[] = {
 	"66",
 	"77",
 	"88",
-	"1010",
+	"TT",
 	"QQ",
 	"KK",
 	"AA",
@@ -71,7 +71,12 @@ char *moves[] = {
  * X X X X X X X X
  */
 
-int res[8388608]; // results of minimax saved
+struct t {
+	char winner;
+	int mindepth;
+};
+
+struct t res[8388608]; // results of minimax saved
 int bestmove[8388608]; // best move for the state
 int debug = 0;
 
@@ -280,7 +285,7 @@ int tryout(int s, int v)
 void dumpstate(int s) {
 	unsigned int i;
 	// printf("State: 0x%x\n", s);
-	printf("Turn: %d\n", (s & TURNMASK == 0));
+	// printf("Turn: %d\n", (s & TURNMASK == 0));
 	printf("Player 1:");
 
 	for (i = 0; i < ones32(s & TENMASK); i++) { printf("T"); }
@@ -296,106 +301,145 @@ void dumpstate(int s) {
 	for (i = 0; i < ones32(s & TWOMASK); i++) { printf("2"); }
 	printf("\n");
 
-	printf("Table: %s\n", moves[s&OUTMASK]);
+	printf("Cards on table: %s\n\n", moves[s&OUTMASK]);
 }
 
 // s = state
 // returns 1 if one will win, returns 0 if two will win
 // f is just for debugging
-int minimax(int s, int f) {
-	int atleastonemove = 0;
 
-	if (res[s] != -1) return res[s];
-	if ( (s & ONEWINSMASK) == ONEWINSVALUE) { RETURN(s,1); }
-	if ( (s & TWOWINSMASK) == TWOWINSVALUE) { RETURN(s,0); }
+struct t minimax(int s, int f) {
+	struct t ret;
+	int currentplayer;
+	int bestchance = 0;
 
-	int best;
-
-	if (PLAYER1TURN(s)) {
-		best = 0; // assume lose first 
-	} else {
-		best = 1; // assume lose first 
+	if (res[s].winner != -1) return res[s];
+	if ( (s & ONEWINSMASK) == ONEWINSVALUE) {  // implies player2 turn
+		ret.winner = 1;
+		ret.mindepth = 1;
+		res[s] = ret;
+		return ret;
+	}
+	if ( (s & TWOWINSMASK) == TWOWINSVALUE) { // implies player1 turn
+		ret.winner = 0;
+		ret.mindepth = 1;
+		res[s] = ret;
+		return ret;
 	}
 
+	currentplayer = PLAYER1TURN(s);
+
+	// assume lose first
+	ret.winner = !currentplayer;
+	// if (currentplayer == 0) { ret.winner = 1; } else { ret.winner = 0; }
+
+	ret.mindepth = 2147483647;
+	
 	for (int i = 0 ; i < 18; i++)
 	{
-		int k, b;
+		int k;
+		struct t r;
 		k = tryout(s,i);
 		if (k == s) continue;
-		atleastonemove = 1;
-		b = minimax(k, s);
-		if (b != best) // oh goodie, this means a win
-		{
-			best = b;
-			bestmove[s] = i;
-			break;
-			/*
-			dumpstate(s);
-			printf("TO\n");
-			dumpstate(k);
-			*/
+		r = minimax(k, s);
+
+		if (r.mindepth < ret.mindepth) {
+			ret.mindepth = r.mindepth;
 		}
-	}
-	if (!atleastonemove) {
-		printf("0x %x from 0x %x\n", s, f);
-		throw(s);
+
+		if (ret.winner != currentplayer && r.winner == currentplayer) 
+		{
+			bestmove[s] = i;
+			ret.winner = currentplayer;
+		} else {
+		}
+
+		// loser tries to maximize his own winning chance
+		/* this one seems to fry
+		if (ret.winner != currentplayer && r.winner != currentplayer) {
+			t = (r.p2wins * 1.0 / (r.p1wins+r.p2wins));
+			if (currentplayer == 1) t = 100-t;
+
+			if (t > percentage ) { percentage = t; bestmove[s] = i; }
+		} */
+
+		if (ret.winner != currentplayer && r.winner != currentplayer) { // if i can find no way to win... try the tree with largest depth
+			if (bestchance < r.mindepth) {
+				bestchance = r.mindepth;
+				bestmove[s] = i;
+			}
+		}
+
 	}
 
-	RETURN(s,best);
+	ret.mindepth ++;
+
+	res[s] = ret;
+	return ret;
+
 }
 
 int main() {
 	int s;
 	int m;
 	int m2;
+	int compu = 2;
 	char buf[10];
 
-	for (unsigned int i = 0 ; i < sizeof(res)/sizeof(int); i++) {
-		res[i] = -1;
+	for (unsigned int i = 0 ; i < 8388608; i++) {
+		res[i].winner = -1;
 		bestmove[i] = -1;
 	}
 
-	printf("%d\n", minimax( INITIALSTATE , 0 ));
+	printf("%d\n", minimax( INITIALSTATE , 0 ).winner);
 
 	s = INITIALSTATE;
 
 	while (1) {
 		dumpstate(s);
-
-		scanf("%s", (char*)&buf);
-		if (strcmp(buf, "P") == 0) { m = 0; }
-		if (strcmp(buf, "6") == 0) { m = 1; }
-		if (strcmp(buf, "7") == 0) { m = 2; }
-		if (strcmp(buf, "8") == 0) { m = 3; }
-		if (strcmp(buf, "T") == 0) { m = 4; }
-		if (strcmp(buf, "Q") == 0) { m = 5; }
-		if (strcmp(buf, "K") == 0) { m = 6; }
-		if (strcmp(buf, "A") == 0) { m = 7; }
-		if (strcmp(buf, "2") == 0) { m = 8; }
-
-		if (strcmp(buf, "66") == 0) { m = 9; }
-		if (strcmp(buf, "77") == 0) { m = 10; }
-		if (strcmp(buf, "88") == 0) { m = 11; }
-		if (strcmp(buf, "QQ") == 0) { m = 13; }
-		if (strcmp(buf, "KK") == 0) { m = 14; }
-		if (strcmp(buf, "AA") == 0) { m = 15; }
-
-		if (strcmp(buf, "QQQ") == 0) { m = 16; }
-		if (strcmp(buf, "KKK") == 0) { m = 17; }
-
-		if (tryout(s,m) == s) {
-			printf("Invalid move. Try again\n");
-			continue;
-		}
-
-		s = tryout(s,m);
-		dumpstate(s);
-
 		minimax(s,0);
-		
 		m2 = bestmove[s];
-		printf("player1 move = %s (%d)\n", moves[m2], m2);
+		printf("*** Player%d plays = %s ***\n", compu, moves[m2]);
 		s = tryout(s,m2);
+
+		while (1) {
+			dumpstate(s);
+			printf("Your turn. (P = pass)\n");
+
+			scanf("%s", (char*)&buf);
+			if (strcmp(buf, "P") == 0 || strcmp(buf, "PASS") == 0) { m = 0; }
+			if (strcmp(buf, "6") == 0) { m = 1; }
+			if (strcmp(buf, "7") == 0) { m = 2; }
+			if (strcmp(buf, "8") == 0) { m = 3; }
+			if (strcmp(buf, "T") == 0) { m = 4; }
+			if (strcmp(buf, "Q") == 0) { m = 5; }
+			if (strcmp(buf, "K") == 0) { m = 6; }
+			if (strcmp(buf, "A") == 0) { m = 7; }
+			if (strcmp(buf, "2") == 0) { m = 8; }
+
+			if (strcmp(buf, "66") == 0) { m = 9; }
+			if (strcmp(buf, "77") == 0) { m = 10; }
+			if (strcmp(buf, "88") == 0) { m = 11; }
+			if (strcmp(buf, "TT") == 0) { m = 12; }
+			if (strcmp(buf, "QQ") == 0) { m = 13; }
+			if (strcmp(buf, "KK") == 0) { m = 14; }
+			if (strcmp(buf, "AA") == 0) { m = 15; }
+
+			if (strcmp(buf, "QQQ") == 0) { m = 16; }
+			if (strcmp(buf, "KKK") == 0) { m = 17; }
+
+			if (tryout(s,m) == s)
+			{
+				printf("Invalid move. Try again\n");
+				continue;
+			}
+
+			break;
+
+		}
+		s = tryout(s,m);
+
+
 
 	}
 }

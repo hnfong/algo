@@ -12,7 +12,7 @@
 // TOTAL 17 bits
 
 // valid top cards on the table
-// nothing (player chooses)
+// nothing (previous player passed)
 // single 6, 7, 8, 10, Q, K, A, 2
 // double 6, 7, 8, 10, Q, K, A
 // triple Q, K
@@ -45,7 +45,7 @@ char *moves[] = {
 	"6",
 	"7",
 	"8",
-	"10",
+	"T",
 	"Q",
 	"K",
 	"A",
@@ -86,14 +86,7 @@ int debug = 0;
 #define BX(A,B,C,D,E,F,G,H) ((A<<7|B<<6|C<<5|D<<4|E<<3|F<<2|G<<1|H)<<16)
 #define B8(A,B,C,D,E,F,G,H) ((A<<7|B<<6|C<<5|D<<4|E<<3|F<<2|G<<1|H)<<8)
 #define B0(A,B,C,D,E,F,G,H) ((A<<7|B<<6|C<<5|D<<4|E<<3|F<<2|G<<1|H))
-						/*
-						 * -trnT T A A 6 6
-						 * X X X X X X X X
-						 * 7 7 8 8 Q Q Q K
-						 * X X X X X X X X
-						 * K K 2 [outcard]
-						 * X X X X X X X X
-						 */
+
 #define ONEWINSMASK   (BX(0,1,1,1,1,1,0,0))
 #define ONEWINSVALUE  (0x000000)
 #define TWOWINSMASK   (BX(0,1,0,0,0,0,1,1)|B8(1,1,1,1,1,1,1,1)|B0(1,1,1,0,0,0,0,0))
@@ -225,14 +218,6 @@ int tryout(int s, int v)
 				break;
 
 			// doubles
-						/*
-						 * -trnT T A A 6 6
-						 * X X X X X X X X
-						 * 7 7 8 8 Q Q Q K
-						 * X X X X X X X X
-						 * K K 2 [outcard]
-						 * X X X X X X X X
-						 */
 			case OUTPAIRSIX:
 				switch (m) { case OUTNOTHING: break; default: return s ^ TURNMASK; }
 				k = s & SIXMASK;
@@ -288,14 +273,13 @@ int tryout(int s, int v)
 void dumpstate(int s) {
 	unsigned int i;
 	// printf("State: 0x%x\n", s);
-	// printf("Turn: %d\n", (s & TURNMASK == 0));
-	printf("Player 1:");
+	printf("Player 1's cards: ");
 
 	for (i = 0; i < ones32(s & TENMASK); i++) { printf("T"); }
 	for (i = 0; i < ones32(s & ACEMASK); i++) { printf("A"); }
 	printf("\n");
 	
-	printf("Player 2:");
+	printf("Player 2's cards: ");
 	for (i = 0; i < ones32(s & SIXMASK); i++) { printf("6"); }
 	for (i = 0; i < ones32(s & SVNMASK); i++) { printf("7"); }
 	for (i = 0; i < ones32(s & EGTMASK); i++) { printf("8"); }
@@ -305,9 +289,9 @@ void dumpstate(int s) {
 	printf("\n");
 
 	if ( (s&OUTMASK) == 0 ) {
-		printf("Cards on table: (none)\n\n");
+		printf("Top cards on table: (none)\n\n");
 	} else {
-		printf("Cards on table: %s\n\n", moves[s&OUTMASK]);
+		printf("Top cards on table: %s\n\n", moves[s&OUTMASK]);
 	}
 }
 
@@ -315,7 +299,7 @@ void dumpstate(int s) {
 // returns 1 if one will win, returns 0 if two will win
 // f is just for debugging
 
-struct t minimax(int s, int f) {
+struct t minimax(int s) {
 	struct t ret;
 	int currentplayer;
 	int bestchance = 0;
@@ -346,7 +330,7 @@ struct t minimax(int s, int f) {
 		struct t r;
 		k = tryout(s,i);
 		if (k == s) continue;
-		r = minimax(k, s);
+		r = minimax(k);
 
 		if (r.mindepth < ret.mindepth) { ret.mindepth = r.mindepth; }
 
@@ -389,7 +373,7 @@ int main() {
 		bestmove[i] = -1;
 	}
 
-	minimax( INITIALSTATE , 0 );
+	minimax( INITIALSTATE );
 
 	s = INITIALSTATE;
 
@@ -400,7 +384,7 @@ int main() {
 	if (m == 1) {
 
 		while (1) {
-			minimax(s,0);
+			minimax(s);
 			if (s == INITIALSTATE) {
 				srand(time(NULL));
 				m2 = firstmoverand[rand() % 5];
@@ -503,7 +487,7 @@ int main() {
 			if ( (s & ONEWINSMASK) == ONEWINSVALUE) { break; }
 			if ( (s & TWOWINSMASK) == TWOWINSVALUE) { break; }
 
-			minimax(s,0);
+			minimax(s);
 			m2 = bestmove[s];
 			printf("*** Player%d plays = %s ***\n", compu, moves[m2]);
 			s = tryout(s,m2);

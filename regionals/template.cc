@@ -14,7 +14,7 @@ using namespace std;
 // using namespace __gnu_cxx;
 
 #define debug printf
-#define foreach(v,c) for (typeof((c).begin()) v = (c).begin(); v != (c).end(); v++)
+#define foreach(v,c) for (__typeof__((c).begin()) v = (c).begin(); v != (c).end(); v++)
 
 int main() {
 	

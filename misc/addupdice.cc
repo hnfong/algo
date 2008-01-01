@@ -9,7 +9,11 @@ int main() {
     set <int> a[32];
     map<int, string> b[32];
     int n[5];
+	int target;
+	printf("Input 5 dice numbers:\n");
     scanf("%d %d %d %d %d", n, n+1, n+2, n+3, n+4);
+	printf("Target number:\n");
+	scanf("%d", &target);
     a[1].insert(n[0]);
     int power = 1;
     char buf[10];
@@ -53,8 +57,10 @@ int main() {
     }
     for (set<int>::iterator it = a[31].begin(); it != a[31].end(); it++)
 	{
-        printf("%d\n", *it);
-        printf("%s\n", b[31][*it].c_str());
+		if (*it == target) {
+			printf("%d\n", *it);
+			printf("%s\n", b[31][*it].c_str());
+		}
     }
     printf("\n");
     return 0;

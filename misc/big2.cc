@@ -40,7 +40,7 @@
 #define OUTTRIPKING 17
 
 
-char *moves[] = {
+const char *moves[] = {
 	"PASS",
 	"6",
 	"7",

@@ -1,0 +1,58 @@
+Task Description:
+
+You are left in a dark cave. The cave has numerous interconnecting chambers and passages. You are lost, but fortunately, you have a map of the cave. You identify your location and try to find the way out. As the cave is really enormous, you want to find the shortest way out, but you find that the map is too large to process manually, which might take days. Fortunately, you have brought along with you a pocket computer. You decide to write a program to solve the maze.
+
+Input:
+
+The first line of input consists of two integers, m and n, where 1<=m,n<=1000, denoting the size of the map. In each of the next n lines, there will be m characters, representing the maze. You can pass through areas marked '.' and cannot pass through areas marked '#'. The starting point is marked 's' and ending point is marked 'e'.
+
+Output:
+
+The output consists of a list of coordinates denoting the shortest path from the starting point to ending point, with one pair of coordinates on one line. If there is more than one possible solution, you may output any one of them. If there is no path to the ending point, output a single line "no way out" (without the quotes).
+
+Sample Input 1:
+
+10 10
+##########
+s........#
+.#..##...#
+.....#...#
+###..#...#
+....##...#
+#######.##
+.........#
+###.e#...#
+##########
+
+Sample Output 1:
+
+1 2
+2 2
+3 2
+4 2
+5 2
+6 2
+7 2
+8 2
+8 3
+8 4
+8 5
+8 6
+8 7
+8 8
+7 8
+6 8
+5 8
+5 9
+
+Sample Input 2:
+
+3 3
+s.#
+.#.
+#.e
+
+Sample Output 2:
+
+no way out
+

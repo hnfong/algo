@@ -1,0 +1,82 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033
+{\fonttbl
+{\f0\fnil\fcharset0\fprq0\fttruetype Arial;}
+{\f1\fnil\fcharset0\fprq0\fttruetype NULL;}
+{\f2\fnil\fcharset0\fprq0\fttruetype Times New Roman;}
+{\f3\fnil\fcharset0\fprq0\fttruetype Dingbats;}
+{\f4\fnil\fcharset0\fprq0\fttruetype Symbol;}
+{\f5\fnil\fcharset0\fprq0\fttruetype Courier New;}}
+{\colortbl
+\red0\green0\blue0;
+\red255\green255\blue255;}
+{\stylesheet
+{\s5\sl240\slmult1\fi-431\li720 Dashed List;}
+{\s2\sl240\slmult1\fi-431\li720 Box List;}
+{\s21\sl240\slmult1\tx1584\sbasedon16\snext15 Section Heading;}
+{\s17\sl240\slmult1\tx431\sbasedon9\snext15 Numbered Heading 2;}
+{\s20\sl240\slmult1\f5\sbasedon15 Plain Text;}
+{\s12\sl240\slmult1\fi-431\li720 Implies List;}
+{\s26\sl240\slmult1\fi-431\li720\sbasedon19 Upper Case List;}
+{\s7\sl240\slmult1\fi-431\li720 Hand List;}
+{\s27\sl240\slmult1\fi-431\li720\sbasedon19 Upper Roman List;}
+{\s15\sl240\slmult1\f2\fs24 Normal;}
+{\s1\sl240\slmult1\li1440\ri1440\sa117\sbasedon15 Block Text;}
+{\s14\sl240\slmult1\fi-431\li720\sbasedon15 Lower Roman List;}
+{\s11\sl240\slmult1\fi-431\li720 Heart List;}
+{\s13\sl240\slmult1\fi-431\li720\sbasedon19 Lower Case List;}
+{\s24\sl240\slmult1\fi-431\li720 Tick List;}
+{\s8\sl240\slmult1\sb440\sa60\f0\fs34\b\sbasedon15\snext15 Heading 1;}
+{\s9\sl240\slmult1\sb440\sa60\f0\fs28\b\sbasedon15\snext15 Heading 2;}
+{\s10\sl240\slmult1\sb440\sa60\f0\fs24\b\sbasedon15\snext15 Heading 3;}
+{\s19\sl240\slmult1\fi-431\li720 Numbered List;}
+{\s23\sl240\slmult1\fi-431\li720 Star List;}
+{\s16\sl240\slmult1\tx431\sbasedon8\snext15 Numbered Heading 1;}
+{\s6\sl240\slmult1\fi-431\li720 Diamond List;}
+{\s18\sl240\slmult1\tx431\sbasedon10\snext15 Numbered Heading 3;}
+{\s4\sl240\slmult1\tx1584\sbasedon16\snext15 Chapter Heading;}
+{\s22\sl240\slmult1\fi-431\li720 Square List;}
+{\s25\sl240\slmult1\fi-431\li720 Triangle List;}
+{\s3\sl240\slmult1\fi-431\li720 Bullet List;}}
+\kerning0\cf0\viewkind1\paperw12240\paperh15840\margl1440\margr1440\widowctl
+\sectd\sbknone\colsx360\margtsxn1170\margbsxn1170\pgncont\ltrsect
+\pard\plain\qc\sb440\sa60\ltrpar\s10\sl240\slmult1{\f0\fs24\b\lang1033{\*\listtag0}User Administration}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\qr\ltrpar\s15\sl240\slmult1{\f2\fs24\b\lang1033{\*\listtag0}Time Limit: 1 second}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\b\lang1033{\*\listtag0}Task Description:}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}SI is managing a multi-user system with lots and lots of users. Since the system lacks a systematic way to manage the user directories, it has become very messy. Some users have been removed from the system, while some new users have been added. Sometimes, SI forgets to delete the user directories when he removes their accounts. As a result, a lot of old directories remain in the system, taking up a lot of precious disk space. SI wants to know which directories have no corresponding users and should be removed from the system.}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}You are a friend of SI, and have agreed to help him with the task. He has }{\f2\fs24\lang1033{\*\listtag0}given you two files, DIR.TXT, USER.TXT, which contains the directory listing and user accounts respectively. You are asked to output a file, OUTPUT.TXT, which contains the names of directories that should be removed. A directory should be removed if and only if there is no corresponding user in the USER.TXT. A user has a name identical to his/her directory name.}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\b\lang1033{\*\listtag0}Input Format:}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}The first line of DIR.TXT contains an integer N. In each of the following N lines, there is a string representing the name of a directory.}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}The first line of USER.TXT contains an integer M. In each of the following M lines, there is a string representing the name of a user. }{\f2\fs24\lang1033{\*\listtag0}You may assume the data is sorted in alphabetical order. }
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}Constraints: 0 < N,M <= 1000. }{\f2\fs24\lang1033{\*\listtag0}Each string is shorter than 10 characters and only consists of uppercase alphabets (A to Z).}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\b\lang1033{\*\listtag0}Output Format:}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}Your output should be a list of directory names to be removed from the system. It does not have to be sorted in alphabetical order.}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\b\lang1033{\*\listtag0}Sample Input:}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\i\lang1033{\*\listtag0}DIR.TXT\tab \tab \tab \tab USER.TXT}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\i\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}8\tab \tab \tab \tab \tab 5}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}LOVELY}{\f2\fs24\lang1033{\*\listtag0}\tab \tab \tab \tab CELEBIX}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}RANDOM\tab \tab \tab \tab HKOI}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}HKOI\tab \tab \tab \tab \tab LOVELY}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}ABIWORD\tab \tab \tab \tab RANDOM}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}MICROSERF\tab \tab \tab \tab YEAH}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}CELEBIX}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}YEAH}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}SILICON\tab \tab \tab }
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\b\lang1033{\*\listtag0}Sample Output:}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\i\lang1033{\*\listtag0}OUTPUT.TXT}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\i\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}ABIWORD}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}MICROSERF}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}SILICON}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}}}

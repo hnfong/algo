@@ -1,0 +1,26 @@
+Back to secondary school english.
+
+Oh no! Tomorrow is English dictation day and Tom hasn't started revising yet! Surely the teacher will choose the hardest words from the passage to test whether he had been a good boy or not! However, Tom believes he has found a way to pass the dictation. He chooses the hardest words from the given passage and only revises them. He asks his best friend, you, to write a program to determine the "hardest" words.
+
+Tom has given you the formula for calculating the difficulty of words:
+
+The difficulty is the sum of the following:
+
+	- The total number of vowels ('a','e','i','o','u')
+	- Number of distinct non-vowel letters
+
+For example, the difficulty of the word "Apple" is 2+2 = 4, since the letter "p" is counted only once. "Bazaar" is 3+3 = 6. "illustration" is 5+5 = 10.
+
+Input:
+
+The first line of the input contains two integers N, M ( 30 >= N >= M > 0 ).
+The following N lines is the list of words given, in each of those lines,
+there is a string of no more than 100 characters, consisting of only lowercase
+alphabets.
+
+You may assume that the difficulty of every word in the input is distinct.
+
+Output:
+
+The output should consist of M lines. The first line should contain the word with the highest difficulty, the second line with the second highest difficulty, etc. The kth line should contain the word with the kth difficulty.
+

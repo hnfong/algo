@@ -1,0 +1,23 @@
+team-foo
+prob-a
+1305 Wrong answer.
+.
+team-foo
+prob-b
+NO DATA
+.
+team-bar
+prob-a
+NO DATA
+.
+team-bar
+prob-b
+1400 Accepted.
+.
+*
+team-foo
+prob-a
+1305 Wrong answer.
+1402 Accepted.
+.
+*

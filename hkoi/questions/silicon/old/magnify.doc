@@ -1,0 +1,102 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang1033
+{\fonttbl
+{\f0\fnil\fcharset0\fprq0\fttruetype Times New Roman;}
+{\f1\fnil\fcharset0\fprq0\fttruetype NULL;}
+{\f2\fnil\fcharset0\fprq0\fttruetype Courier New;}
+{\f3\fnil\fcharset0\fprq0\fttruetype Dingbats;}
+{\f4\fnil\fcharset0\fprq0\fttruetype Symbol;}
+{\f5\fnil\fcharset0\fprq0\fttruetype Arial;}}
+{\colortbl
+\red0\green0\blue0;
+\red255\green255\blue255;}
+{\stylesheet
+{\s5\sl240\slmult1\fi-431\li720 Dashed List;}
+{\s2\sl240\slmult1\fi-431\li720 Box List;}
+{\s21\sl240\slmult1\tx1584\sbasedon16\snext15 Section Heading;}
+{\s17\sl240\slmult1\tx431\sbasedon9\snext15 Numbered Heading 2;}
+{\s20\sl240\slmult1\f2\sbasedon15 Plain Text;}
+{\s12\sl240\slmult1\fi-431\li720 Implies List;}
+{\s26\sl240\slmult1\fi-431\li720\sbasedon19 Upper Case List;}
+{\s7\sl240\slmult1\fi-431\li720 Hand List;}
+{\s27\sl240\slmult1\fi-431\li720\sbasedon19 Upper Roman List;}
+{\s15\sl240\slmult1\f0\fs24 Normal;}
+{\s1\sl240\slmult1\li1440\ri1440\sa117\sbasedon15 Block Text;}
+{\s14\sl240\slmult1\fi-431\li720\sbasedon15 Lower Roman List;}
+{\s11\sl240\slmult1\fi-431\li720 Heart List;}
+{\s13\sl240\slmult1\fi-431\li720\sbasedon19 Lower Case List;}
+{\s24\sl240\slmult1\fi-431\li720 Tick List;}
+{\s8\sl240\slmult1\sb440\sa60\f5\fs34\b\sbasedon15\snext15 Heading 1;}
+{\s9\sl240\slmult1\sb440\sa60\f5\fs28\b\sbasedon15\snext15 Heading 2;}
+{\s10\sl240\slmult1\sb440\sa60\f5\fs24\b\sbasedon15\snext15 Heading 3;}
+{\s19\sl240\slmult1\fi-431\li720 Numbered List;}
+{\s23\sl240\slmult1\fi-431\li720 Star List;}
+{\s16\sl240\slmult1\tx431\sbasedon8\snext15 Numbered Heading 1;}
+{\s6\sl240\slmult1\fi-431\li720 Diamond List;}
+{\s18\sl240\slmult1\tx431\sbasedon10\snext15 Numbered Heading 3;}
+{\s4\sl240\slmult1\tx1584\sbasedon16\snext15 Chapter Heading;}
+{\s22\sl240\slmult1\fi-431\li720 Square List;}
+{\s25\sl240\slmult1\fi-431\li720 Triangle List;}
+{\s3\sl240\slmult1\fi-431\li720 Bullet List;}}
+\kerning0\cf0\viewkind1\paperw12240\paperh15840\margl1440\margr1440\widowctl
+\sectd\sbknone\colsx360\pgncont\ltrsect
+\pard\plain\qc\ltrpar\s15\sl240\slmult1{\f0\fs28\b\lang1033{\*\listtag0}Magnify}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\lang1033{\*\listtag0}Accessibility options to assist the disabled in computer applications is becoming increasingly important. In some places, Laws have been made to ensure that everybody will be able to access the same information, even for people with disabilities. One of these options to enlarge a portion of the screen for people with eye weaknesses. Your task is to write a simple program that magnifies text graphics.}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\b\lang1033{\*\listtag0}Input}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\lang1033{\*\listtag0}The first line of the input file MAGNIFY.IN contains 3 integers, }{\f0\fs24\i\b\lang1033{\*\listtag0}w}{\f0\fs24\lang1033{\*\listtag0}, }{\f0\fs24\i\b\lang1033{\*\listtag0}h}{\f0\fs24\lang1033{\*\listtag0}, }{\f0\fs24\i\b\lang1033{\*\listtag0}z}{\f0\fs24\lang1033{\*\listtag0}. Starting on the 2nd line is a }{\f0\fs24\i\b\lang1033{\*\listtag0}w}{\f0\fs24\lang1033{\*\listtag0}*}{\f0\fs24\i\b\lang1033{\*\listtag0}h}{\f0\fs24\lang1033{\*\listtag0} size text graphic, (i.e. }{\f0\fs24\i\b\lang1033{\*\listtag0}h}{\f0\fs24\lang1033{\*\listtag0} lines with }{\f0\fs24\i\b\lang1033{\*\listtag0}w}{\f0\fs24\lang1033{\*\listtag0} characters on each line.) }{\f0\fs24\i\b\lang1033{\*\listtag0}z}{\f0\fs24\lang1033{\*\listtag0} is the magnification factor.}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\b\lang1033{\*\listtag0}Output}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\lang1033{\*\listtag0}The output file MAGNIFY.OUT should be a }{\f0\fs24\i\b\lang1033{\*\listtag0}wz}{\f0\fs24\lang1033{\*\listtag0}*}{\f0\fs24\i\b\lang1033{\*\listtag0}hz}{\f0\fs24\lang1033{\*\listtag0} graphic, magnified from the input. Each 1*1 character in the input should be magnified to }{\f0\fs24\i\b\lang1033{\*\listtag0}z}{\f0\fs24\lang1033{\*\listtag0}*}{\f0\fs24\i\b\lang1033{\*\listtag0}z}{\f0\fs24\lang1033{\*\listtag0} characters. The sample output should demonstrate this clearly.}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\b\lang1033{\*\listtag0}Constraints}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\lang1033{\*\listtag0}1 <= }{\f0\fs24\i\b\lang1033{\*\listtag0}w}{\f0\fs24\lang1033{\*\listtag0},}{\f0\fs24\i\b\lang1033{\*\listtag0}h}{\f0\fs24\lang1033{\*\listtag0} <= 100}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\lang1033{\*\listtag0}1 <= }{\f0\fs24\i\b\lang1033{\*\listtag0}z}{\f0\fs24\lang1033{\*\listtag0} <= 10}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\lang1033{\*\listtag0}The output file will not exceed 500K}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\lang1033{\*\listtag0}All characters in the text graphic are alphanumeric (A-Z, a-z, 0-9)}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\b\lang1033{\*\listtag0}Sample Input 1}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}22 5 2}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}H   H K  K  OOO  IIIII}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}H   H K K  O   O   I  }
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}HHHHH KK   O   O   I  }
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}H   H K K  O   O   I  }
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}H   H K  K  OOO  IIIII}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\b\lang1033{\*\listtag0}Sample Output 1}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}HH      HH  KK    KK}{\f2\fs24\lang1033{\*\listtag0}    OOOOOO    IIIIIIIIII}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}HH      HH}{\f2\fs24\lang1033{\*\listtag0}  KK    KK    OOOOOO    IIIIIIIIII}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}HH      HH}{\f2\fs24\lang1033{\*\listtag0}  KK  KK    OO      OO      II    }
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}H}{\f2\fs24\lang1033{\*\listtag0}H      HH}{\f2\fs24\lang1033{\*\listtag0}  KK  KK    OO      OO      II    }
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}HHHHHHHHHH}{\f2\fs24\lang1033{\*\listtag0}  KKKK      OO      OO      II    }
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}HHHHHHHHHH}{\f2\fs24\lang1033{\*\listtag0}  KKKK      OO      OO      II    }
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}HH      HH}{\f2\fs24\lang1033{\*\listtag0}  KK  KK    OO      OO      II    }
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}HH      HH}{\f2\fs24\lang1033{\*\listtag0}  KK  KK    OO      OO      II    }
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}HH      HH}{\f2\fs24\lang1033{\*\listtag0}  KK    KK    OOOOOO    IIIIIIIIII}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}HH      HH}{\f2\fs24\lang1033{\*\listtag0}  KK    KK    OOOOOO    IIIIIIIIII}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}\page }
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\b\lang1033{\*\listtag0}Sample Input 2}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}5 3 4}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}12345}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}a b c}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0} SICX}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\b\lang1033{\*\listtag0}Sample Output 2}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}1111}{\f2\fs24\lang1033{\*\listtag0}2222333344445555}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}1111}{\f2\fs24\lang1033{\*\listtag0}2222333344445555}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}1111}{\f2\fs24\lang1033{\*\listtag0}2222333344445555}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}1111}{\f2\fs24\lang1033{\*\listtag0}2222333344445555}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}aaaa    bbbb    cccc}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}aaaa    bbbb    cccc}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}aaaa    bbbb    cccc}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}aaaa    bbbb    cccc}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}    SSSSIIIICCCCXXXX}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}    SSSS}{\f2\fs24\lang1033{\*\listtag0}IIIICCCCXXXX}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}    SSSS}{\f2\fs24\lang1033{\*\listtag0}IIIICCCCXXXX}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}    SSSS}{\f2\fs24\lang1033{\*\listtag0}IIIICCCCXXXX}
+\par\pard\plain\ltrpar\s15\sl240\slmult1{\f2\fs24\lang1033{\*\listtag0}
+\par}\pard\plain\ltrpar\s15\sl240\slmult1{\f0\fs24\lang1033{\*\listtag0} }}

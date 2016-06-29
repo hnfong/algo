@@ -1,0 +1,20 @@
+Super Speedy Sort
+Runtime Limit 4 seconds
+
+We define the sequence S(n) = a*n mod b, with a length of m, where a,b,m are given. For example, if a = 4, b = 11, m = 5, then S = { 4, 8, 1, 5, 9 }. We define another sequence T as a sorted version of S. Following the above example, T(n) = { 1, 4, 5, 8, 9 }. The problem is, given a, b, m, and a list of integers i1,i2,i3,..ik, you are to find the values of T(i1), T(i2), T(i3) .. T(ik).
+
+Input:
+The first line of input consists of 3 integers, a, b, m, and k. 0 < a,b < 2^30, 0 < m <= 2 000 000, 0 < k <= 1000. Each of next k lines contains an integer representing i1,i2,i3..ik. 0 < i1,i2,i3..ik <= m.
+
+Output:
+The output should have k lines, the first line with the value of T(i1), the second line with T(i2), the third line with T(i3), etc.
+
+Sample Input:
+4 11 5 2
+2
+5
+
+Sample Output:
+4
+9
+

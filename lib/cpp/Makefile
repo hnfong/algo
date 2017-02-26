@@ -8,3 +8,6 @@ all: $(mains) $(tests)
 
 %.sample.myout: %.sample.in %.exe
 	./$(word 2,$^) < $< | tee $@
+
+clean:
+	rm -vf *.exe

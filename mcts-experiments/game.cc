@@ -18,7 +18,7 @@ void interactive() {
     gameMap[1] = new TicTacToeGameState();
     gameMap[2] = new ConnectFourGameState();
 
-    int which;
+    int which = 0;
     while (gameMap.count(which) == 0) {
         cout << "Choose game: " << endl;
         cout << "1. TicTacToe" << endl;

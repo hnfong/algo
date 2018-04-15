@@ -40,9 +40,18 @@ class GameState {  // Abstract class.
 
     virtual void display() = 0;
     virtual bool play(GameChoice choice) = 0;
+
+    /**
+     * Returns:
+     * winning player (1+) if somebody won
+     * 0 if draw
+     * -1 if not yet finished
+     */
     virtual int checkFinished() = 0;
+
     virtual vector<GameChoice > validNextMoves() = 0;
     virtual GameState *clone() = 0;
+    virtual int suggestedRounds() = 0;
 
     int lastMovedPlayer() {
         return playerLastMoved;
@@ -66,6 +75,101 @@ class GameState {  // Abstract class.
   private:
     int playerLastMoved;
     int numPlayers;
+};
+
+class TicTacToeGameState : public GameState {
+  public:
+    TicTacToeGameState() : GameState(2) {
+        memset(board, 0, sizeof(board));
+    }
+
+    GameState *clone() {
+        return new TicTacToeGameState(*this);
+    }
+
+    void display() {
+        for (int i = 0; i < board_h; i++) {
+            for (int j = 0; j < board_w; j++) {
+                cout << (int)board[j][i];
+            }
+            cout << endl;
+        }
+        cout << "(Player " << nextPlayer() << " to move)" << endl;
+    }
+
+    bool play(GameChoice choice) {
+        int x = choice.underlying() % 3;
+        int y = choice.underlying() / 3;
+
+        if (board[y][x] != 0) {
+            return false;
+        }
+        board[y][x] = nextPlayer();
+        setNextPlayer();
+        return true;
+    }
+
+    int checkFinished() {
+        int played = 0;
+        for (int i = 0; i < board_w; i++) {
+            for (int j = 0; j < board_h; j++) {
+                if (board[j][i] != 0) {
+                    if (sameFrom(i, j, 1, 0) || sameFrom(i, j, 0, 1) || sameFrom(i, j, 1, 1) || sameFrom(i, j, 1, -1)) {
+                        return board[j][i];
+                    }
+                    played++;
+                }
+            }
+        }
+
+        if (played == 3*3) {
+            return 0;
+        }
+
+        return -1;
+    }
+
+    vector<GameChoice > validNextMoves() {
+        // display();
+        vector<GameChoice> result;
+        for (int i = 0; i < board_w; i++) {
+            for (int j = 0; j < board_h; j++) {
+                if (board[j][i] == 0) {
+                    result.push_back(j * board_w + i);
+                    // cout << "[" << j << "," << i << "] ";
+                }
+            }
+        }
+        // cout << endl;
+        return result;
+    }
+
+    int suggestedRounds() {
+        return 5000;
+    }
+
+  private:
+    const static int board_w = 3;
+    const static int board_h = 3;
+    char board[board_h][board_w];
+
+    bool sameFrom(int x, int y, int dx, int dy) {
+        int orig = board[y][x];
+
+        for (int i = 1; i < 3; i++) {
+            if (!((y+dy*i < board_h) && (x+dx*i < board_w))) {
+                return false;
+            }
+            if (!((y+dy*i >= 0) && (x+dx*i >= 0))) {
+                return false;
+            }
+            if (board[y+dy*i][x+dx*i] != orig) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 };
 
 class ConnectFourGameState : public GameState {
@@ -104,12 +208,7 @@ class ConnectFourGameState : public GameState {
         return true;
     }
 
-    /**
-     * Returns:
-     * winning player (1+) if somebody won
-     * 0 if draw
-     * -1 if not yet finished
-     */
+    // XXX: it may return true on "connect five" cases. Is this a valid win position or not?
     int checkFinished() {
         // For each col, check whether each spot is a starting point for a winning four.
         for (int i = 0; i < board_w; i++) {
@@ -141,6 +240,10 @@ class ConnectFourGameState : public GameState {
         }
 
         return result;
+    }
+
+    int suggestedRounds() {
+        return 10000;
     }
 
   private:
@@ -314,15 +417,26 @@ class MCTSNode {
 
 namespace cli {
 void interactive() {
-    MCTSNode g(new ConnectFourGameState());
+    map<int, GameState*> gameMap;
+    gameMap[1] = new TicTacToeGameState();
+    gameMap[2] = new ConnectFourGameState();
+
+    int which;
+    while (gameMap.count(which) == 0) {
+        cout << "Choose game: " << endl;
+        cout << "1. TicTacToe" << endl;
+        cout << "2. Connect-Four" << endl;
+        cin >> which;
+    }
+
+    MCTSNode g(gameMap[which]);
     g.state->display();
     while (true) {
-        int which;
         if (g.state->nextPlayer() == 1) {
             cout << "Your move, choose a move" << endl;
             cin >> which;
         } else {
-            g.simulate(10000);
+            g.simulate(g.state->suggestedRounds());
             which = g.ucbChoice().second.underlying();
             cout << "Player 2 chose: " << which << endl;
         }

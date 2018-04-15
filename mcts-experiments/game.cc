@@ -302,7 +302,7 @@ class MCTSNode {
     // First return parameter is whether the ucb choice is based on all legal
     // moves being considered. (XXX: is this necessary actually?) Second return
     // parameter is the choice with maximum potential value.
-    std::pair<bool, GameChoice > choose(bool useUcb = true) {
+    std::pair<bool, GameChoice > choose(bool useUcb = true, bool printDebug = false) {
         auto validNextMoves = state->validNextMoves();
         assert(validNextMoves.size() > 0);
         auto bestChoice = validNextMoves[0];
@@ -323,10 +323,14 @@ class MCTSNode {
 
             auto candidate = choiceMap[*it];
 
-            double ucb = useUcb ? std::sqrt(2.0 * std::log(trials) / candidate->wins) : 0;
+            double ucb = std::sqrt(2.0 * std::log(trials) / (candidate->trials));
             double mean = (1.0 * candidate->wins - candidate->losses) / candidate->trials;
 
-            double upperBound = mean + ucb;
+            if (printDebug) {
+                cout << " - " << it->underlying() << ": mean=" << mean << ", " << 100.0 * candidate->wins / candidate->trials << " vs " << 100.0 * candidate->losses / candidate->trials << " (" << candidate->trials << ") ucb:" << std::sqrt(2.0 * std::log(trials) / (candidate->trials)) <<endl;
+            }
+
+            double upperBound = mean + (useUcb ? ucb : 0);
             if (upperBound > best) {
                 best = upperBound;
                 bestChoice = *it;

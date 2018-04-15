@@ -2,7 +2,6 @@
 #include <cassert>
 #include <cmath>
 #include <iostream>
-#include <sstream>
 #include <vector>
 #include <map>
 
@@ -23,12 +22,6 @@ class GameChoice {
         return choice;
     }
 
-    std::string toString() {
-        std::stringstream ss;
-        ss << choice;  // This will not work if T becomes complicated.
-        return ss.str();
-    }
-
     bool operator<(const GameChoice<T>& b) const {
         return choice < b.choice;
     }
@@ -47,7 +40,7 @@ class GameState {  // Abstract class.
     virtual bool play(GameChoice<int> choice) = 0;
     virtual int checkFinished() = 0;
     virtual vector<GameChoice<int> > validNextMoves() = 0;
-    virtual GameState *newCopy() = 0;
+    virtual GameState *clone() = 0;
 
     int lastMovedPlayer() {
         return playerLastMoved;
@@ -59,6 +52,9 @@ class GameState {  // Abstract class.
             result = 2;
         }
         return result;
+    }
+
+    virtual ~GameState() {
     }
   protected:
     void setNextPlayer() {
@@ -77,7 +73,9 @@ class ConnectFourGameState : public GameState {
         memset(heights, 0, sizeof(heights));
     }
 
-    GameState *newCopy() {
+    // https://groups.google.com/forum/?hl=en#!topic/comp.lang.c++/wBGBNl0yey8
+    // https://stackoverflow.com/questions/4755105/making-a-copy-of-an-object-of-abstract-base-class
+    GameState *clone() {
         return new ConnectFourGameState(*this);
     }
 
@@ -172,13 +170,11 @@ class ConnectFourGameState : public GameState {
 class MCTSNode {
   public:
     MCTSNode(MCTSNode &parent_, GameChoice<int> choiceAppliedToParent) {
-        state.reset(parent_.state->newCopy());  // copy and apply state
+        state.reset(parent_.state->clone());  // copy and apply state
         state->play(choiceAppliedToParent);
         trials = 0;
         wins = 0;
         losses = 0;
-
-        // cout << "Created game state: " << this << endl;
     }
 
     MCTSNode(GameState *state_) {
@@ -271,8 +267,13 @@ class MCTSNode {
         }
     }
 
-    // This is a weird implementation indeed...
+    // This is a weird implementation indeed... XXX: we will leak memory if we
+    // forget to destroy stuff here, even if we add them to destructor. a
+    // better way may be to return a shared_ptr of the newState and then really
+    // just destroy everything in the map (which needs to use shared_ptr as
+    // well).
     void enter(GameChoice<int> choice) {
+        // Determine the new state, create if necessary
         MCTSNode *newState;
         if (choiceMap.count(choice) == 0) {
             newState = new MCTSNode(*this, choice);
@@ -280,19 +281,22 @@ class MCTSNode {
             newState = choiceMap[choice];
         }
 
+        // Delete the choiceMap of the current state
         for (auto it = choiceMap.begin(); it != choiceMap.end(); it++) {
             if (it->second != newState) {
                 delete it->second;
             }
         }
 
+        // Replace contents of this with that.
         *this = *newState;
+
+        // newState is now useless. "this" is now the new newState.
         newState->choiceMap.clear();
         delete newState;
     }
 
     ~MCTSNode() {
-        // cout << "Deleting game state: " << this << endl;
         for (auto it = choiceMap.begin(); it != choiceMap.end(); it++) {
             delete it->second;
         }
@@ -306,32 +310,14 @@ class MCTSNode {
     map<GameChoice<int>, MCTSNode*> choiceMap;
 };
 
-namespace util {
-
-template <class T>
-std::string stringify(GameChoice<T> x) {
-    return x.toString();
-}
-
-template <class T>
-std::string join(vector<T> &v, std::string delim) {
-    std::stringstream result;
-    for (auto it = v.begin(); it != v.end(); it++) {
-        result << stringify(*it);
-        result << delim;
-    }
-    return result.str();
-}
-
-}  // util
-
-namespace interface {
+namespace cli {
 void interactive() {
     MCTSNode g(new ConnectFourGameState());
     g.state->display();
     while (true) {
         int which;
         if (g.state->nextPlayer() == 1) {
+            cout << "Your move, choose a move" << endl;
             cin >> which;
         } else {
             g.simulate(10000);
@@ -347,9 +333,9 @@ void interactive() {
         }
     }
 }
-}  // namespace interface
+}  // namespace cli
 
 int main() {
-    interface::interactive();
+    cli::interactive();
     return 0;
 }

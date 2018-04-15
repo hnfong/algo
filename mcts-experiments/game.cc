@@ -150,7 +150,7 @@ class TicTacToeGameState : public GameState {
     }
 
     int suggestedRounds() {
-        return 300;
+        return 1000;
     }
 
   private:
@@ -284,6 +284,12 @@ int randInt() {
     static std::uniform_int_distribution<int> uniform_dist;
     return uniform_dist(randEngine);
 }
+
+std::string percent(double x) {
+    char buf[100];
+    snprintf(buf, sizeof(buf), "%.02f", x * 100.0);
+    return std::string(buf);
+}
 }  // namespace util
 
 class MCTSNode {
@@ -315,6 +321,8 @@ class MCTSNode {
             return std::make_pair(true, bestChoice);
         }
 
+        std::random_shuffle(validNextMoves.begin(), validNextMoves.end());
+
         double best = std::numeric_limits<double>::lowest();
 
         bool valid = true;
@@ -331,7 +339,12 @@ class MCTSNode {
             double mean = (1.0 * candidate->wins - candidate->losses) / candidate->trials;
 
             if (printDebug) {
-                cout << " - " << it->underlying() << ": mean=" << mean << ", " << 100.0 * candidate->wins / candidate->trials << " vs " << 100.0 * candidate->losses / candidate->trials << " (" << candidate->trials << ") ucb:" << std::sqrt(2.0 * std::log(trials) / (candidate->trials)) <<endl;
+                cout << " - " << it->underlying() << ": mean=" << mean <<
+                    " win%=" << util::percent(1.0 * candidate->wins / candidate->trials) <<
+                    " loss%=" << util::percent(1.0 * candidate->losses / candidate->trials) <<
+                    " draw%=" << util::percent(1.0 * (candidate->trials - candidate->losses - candidate->wins) / candidate->trials) <<
+                    " trials=" << candidate->trials <<
+                    " ucb=" << ucb << endl;
             }
 
             double upperBound = mean + (useUcb ? ucb : 0);
@@ -455,7 +468,7 @@ void interactive() {
             cin >> which;
         } else {
             g.simulate(g.state->suggestedRounds());
-            which = g.choose(false).second.underlying();
+            which = g.choose(false, true).second.underlying();
             cout << "Player 2 chose: " << which << endl;
         }
         g.enter(GameChoice(which));

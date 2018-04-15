@@ -84,6 +84,10 @@ class TicTacToeGameState : public GameState {
         memset(board, 0, sizeof(board));
     }
 
+    TicTacToeGameState(const char *board_) : GameState(2) {
+        memcpy(board, board_, sizeof(board));
+    }
+
     GameState *clone() {
         return new TicTacToeGameState(*this);
     }
@@ -146,7 +150,7 @@ class TicTacToeGameState : public GameState {
     }
 
     int suggestedRounds() {
-        return 1000;
+        return 300;
     }
 
   private:

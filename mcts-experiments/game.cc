@@ -36,12 +36,49 @@ class GameChoice {
     T choice;
 };
 
-class GameState {
+class GameState {  // Abstract class.
   public:
-    GameState() {
+    GameState(int numPlayers_) {
+        playerLastMoved = numPlayers_;
+        numPlayers = numPlayers_;
+    }
+
+    virtual void display() = 0;
+    virtual bool play(GameChoice<int> choice) = 0;
+    virtual int checkFinished() = 0;
+    virtual vector<GameChoice<int> > validNextMoves() = 0;
+    virtual GameState *newCopy() = 0;
+
+    int lastMovedPlayer() {
+        return playerLastMoved;
+    }
+
+    int nextPlayer() {
+        int result = (playerLastMoved + 1) % 2;
+        if (result == 0) {  // one-based yuckiness
+            result = 2;
+        }
+        return result;
+    }
+  protected:
+    void setNextPlayer() {
+        playerLastMoved = nextPlayer();
+    }
+
+  private:
+    int playerLastMoved;
+    int numPlayers;
+};
+
+class ConnectFourGameState : public GameState {
+  public:
+    ConnectFourGameState() : GameState(2) {
         memset(board, 0, sizeof(board));
         memset(heights, 0, sizeof(heights));
-        playerLastMoved = 2;
+    }
+
+    GameState *newCopy() {
+        return new ConnectFourGameState(*this);
     }
 
     void display() {
@@ -61,9 +98,9 @@ class GameState {
             return false;
         }
 
-        playerLastMoved = nextPlayer();
+        board[heights[col]++][col] = nextPlayer();
 
-        board[heights[col]++][col] = playerLastMoved;
+        setNextPlayer();
         return true;
     }
 
@@ -95,18 +132,6 @@ class GameState {
         return -1;
     }
 
-    int lastMovedPlayer() {
-        return playerLastMoved;
-    }
-
-    int nextPlayer() {
-        int result = (playerLastMoved + 1) % 2;
-        if (result == 0) {  // one-based yuckiness
-            result = 2;
-        }
-        return result;
-    }
-
     vector<GameChoice<int> > validNextMoves() {
         vector<GameChoice<int> > result;
         for (int i = 0; i < board_w; i++) {
@@ -124,7 +149,6 @@ class GameState {
     const static int board_h = 6;
     char board[board_h][board_w];
     int heights[board_w];
-    int playerLastMoved;
 
     bool sameFrom(int x, int y, int dx, int dy) {
         int orig = board[y][x];
@@ -145,11 +169,11 @@ class GameState {
     }
 };
 
-class MCTSGameState {
+class MCTSNode {
   public:
-    MCTSGameState(MCTSGameState &parent_, GameChoice<int> choiceAppliedToParent) {
-        state = parent_.state;  // copy and apply state
-        state.play(choiceAppliedToParent);
+    MCTSNode(MCTSNode &parent_, GameChoice<int> choiceAppliedToParent) {
+        state.reset(parent_.state->newCopy());  // copy and apply state
+        state->play(choiceAppliedToParent);
         trials = 0;
         wins = 0;
         losses = 0;
@@ -157,18 +181,18 @@ class MCTSGameState {
         // cout << "Created game state: " << this << endl;
     }
 
-    MCTSGameState() {
+    MCTSNode(GameState *state_) {
         trials = 0;
         wins = 0;
         losses = 0;
-        state = GameState();
+        state.reset(state_);
     }
 
     // First return parameter is whether the ucb choice is based on all legal
     // moves being considered. (XXX: is this necessary actually?) Second return
     // parameter is the choice with maximum potential value.
     std::pair<bool, GameChoice<int> > ucbChoice() {
-        auto validNextMoves = state.validNextMoves();
+        auto validNextMoves = state->validNextMoves();
         assert(validNextMoves.size() > 0);
         auto bestChoice = validNextMoves[0];
 
@@ -203,10 +227,10 @@ class MCTSGameState {
 
     // Returns the eventual winner for this playout, 0 if draw
     int playout() {
-        int fin = state.checkFinished();
+        int fin = state->checkFinished();
         if (fin != -1) {
             trials++;
-            if (fin == state.lastMovedPlayer()) {
+            if (fin == state->lastMovedPlayer()) {
                 wins++;
             } else if (fin != 0) {
                 losses++;
@@ -216,15 +240,15 @@ class MCTSGameState {
 
         auto ucb = ucbChoice();
         auto choice = ucb.second;
-        MCTSGameState *nextGameState = nullptr;
+        MCTSNode *nextGameState = nullptr;
 
         if (!ucb.first) {  // ucb choice is not valid, we randomly choose
-            auto valid = state.validNextMoves();
+            auto valid = state->validNextMoves();
             choice = valid[rand() % valid.size()];
         }
 
         if (choiceMap.count(choice) == 0) {
-            auto x = new MCTSGameState(*this, choice);
+            auto x = new MCTSNode(*this, choice);
             assert(x != nullptr);
             choiceMap[choice] = x;
         }
@@ -233,7 +257,7 @@ class MCTSGameState {
         nextGameState = choiceMap[choice];
         fin = nextGameState->playout();
         trials++;
-        if (fin == state.lastMovedPlayer()) {
+        if (fin == state->lastMovedPlayer()) {
             wins++;
         } else if (fin != 0) {
             losses++;
@@ -249,9 +273,9 @@ class MCTSGameState {
 
     // This is a weird implementation indeed...
     void enter(GameChoice<int> choice) {
-        MCTSGameState *newState;
+        MCTSNode *newState;
         if (choiceMap.count(choice) == 0) {
-            newState = new MCTSGameState(*this, choice);
+            newState = new MCTSNode(*this, choice);
         } else {
             newState = choiceMap[choice];
         }
@@ -267,19 +291,19 @@ class MCTSGameState {
         delete newState;
     }
 
-    ~MCTSGameState() {
+    ~MCTSNode() {
         // cout << "Deleting game state: " << this << endl;
         for (auto it = choiceMap.begin(); it != choiceMap.end(); it++) {
             delete it->second;
         }
     }
 
-    GameState state;
+    std::shared_ptr<GameState> state;
   private:
     int trials;
     int wins;
     int losses;
-    map<GameChoice<int>, MCTSGameState*> choiceMap;
+    map<GameChoice<int>, MCTSNode*> choiceMap;
 };
 
 namespace util {
@@ -303,11 +327,11 @@ std::string join(vector<T> &v, std::string delim) {
 
 namespace interface {
 void interactive() {
-    MCTSGameState g;
-    g.state.display();
+    MCTSNode g(new ConnectFourGameState());
+    g.state->display();
     while (true) {
         int which;
-        if (g.state.nextPlayer() == 1) {
+        if (g.state->nextPlayer() == 1) {
             cin >> which;
         } else {
             g.simulate(10000);
@@ -315,8 +339,8 @@ void interactive() {
             cout << "Player 2 chose: " << which << endl;
         }
         g.enter(GameChoice<int>(which));
-        g.state.display();
-        int fin = g.state.checkFinished();
+        g.state->display();
+        int fin = g.state->checkFinished();
         if (fin != -1) {
             cout << "Game finished, winner: " << fin << endl;
             break;

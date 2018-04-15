@@ -2,8 +2,9 @@
 #include <cassert>
 #include <cmath>
 #include <iostream>
-#include <vector>
 #include <map>
+#include <random>
+#include <vector>
 
 using std::cin;
 using std::cout;
@@ -145,7 +146,7 @@ class TicTacToeGameState : public GameState {
     }
 
     int suggestedRounds() {
-        return 5000;
+        return 1000;
     }
 
   private:
@@ -243,7 +244,7 @@ class ConnectFourGameState : public GameState {
     }
 
     int suggestedRounds() {
-        return 10000;
+        return 3000;
     }
 
   private:
@@ -272,6 +273,15 @@ class ConnectFourGameState : public GameState {
     }
 };
 
+namespace util {
+int randInt() {
+    static std::random_device randDevice;
+    static std::default_random_engine randEngine(randDevice());
+    static std::uniform_int_distribution<int> uniform_dist;
+    return uniform_dist(randEngine);
+}
+}  // namespace util
+
 class MCTSNode {
   public:
     MCTSNode(MCTSNode &parent_, GameChoice choiceAppliedToParent) {
@@ -292,7 +302,7 @@ class MCTSNode {
     // First return parameter is whether the ucb choice is based on all legal
     // moves being considered. (XXX: is this necessary actually?) Second return
     // parameter is the choice with maximum potential value.
-    std::pair<bool, GameChoice > ucbChoice() {
+    std::pair<bool, GameChoice > choose(bool useUcb = true) {
         auto validNextMoves = state->validNextMoves();
         assert(validNextMoves.size() > 0);
         auto bestChoice = validNextMoves[0];
@@ -313,7 +323,7 @@ class MCTSNode {
 
             auto candidate = choiceMap[*it];
 
-            double ucb = std::sqrt(2.0 * std::log(trials) / candidate->wins);
+            double ucb = useUcb ? std::sqrt(2.0 * std::log(trials) / candidate->wins) : 0;
             double mean = (1.0 * candidate->wins - candidate->losses) / candidate->trials;
 
             double upperBound = mean + ucb;
@@ -339,13 +349,13 @@ class MCTSNode {
             return fin;
         }
 
-        auto ucb = ucbChoice();
+        auto ucb = choose();
         auto choice = ucb.second;
         MCTSNode *nextGameState = nullptr;
 
         if (!ucb.first) {  // ucb choice is not valid, we randomly choose
             auto valid = state->validNextMoves();
-            choice = valid[rand() % valid.size()];
+            choice = valid[util::randInt() % valid.size()];
         }
 
         if (choiceMap.count(choice) == 0) {
@@ -437,7 +447,7 @@ void interactive() {
             cin >> which;
         } else {
             g.simulate(g.state->suggestedRounds());
-            which = g.ucbChoice().second.underlying();  // XXX: we may want to not use ucbChoice, but instead just use the expected mean...?
+            which = g.choose(false).second.underlying();
             cout << "Player 2 chose: " << which << endl;
         }
         g.enter(GameChoice(which));
@@ -450,6 +460,7 @@ void interactive() {
     }
 }
 }  // namespace cli
+
 
 int main() {
     cli::interactive();

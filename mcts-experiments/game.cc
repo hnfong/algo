@@ -437,7 +437,7 @@ void interactive() {
             cin >> which;
         } else {
             g.simulate(g.state->suggestedRounds());
-            which = g.ucbChoice().second.underlying();
+            which = g.ucbChoice().second.underlying();  // XXX: we may want to not use ucbChoice, but instead just use the expected mean...?
             cout << "Player 2 chose: " << which << endl;
         }
         g.enter(GameChoice(which));

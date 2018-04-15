@@ -12,9 +12,9 @@ using std::map;
 using std::vector;
 
 template <class T>
-class GameChoice {
+class GameChoiceT {
   public:
-    GameChoice(T choice_) {  // This can probably be private, but who cares for now...
+    GameChoiceT(T choice_) {  // This can probably be private, but who cares for now...
         choice = choice_;
     }
 
@@ -22,12 +22,14 @@ class GameChoice {
         return choice;
     }
 
-    bool operator<(const GameChoice<T>& b) const {
+    bool operator<(const GameChoiceT<T>& b) const {
         return choice < b.choice;
     }
   private:
     T choice;
 };
+
+typedef GameChoiceT<int> GameChoice;
 
 class GameState {  // Abstract class.
   public:
@@ -37,9 +39,9 @@ class GameState {  // Abstract class.
     }
 
     virtual void display() = 0;
-    virtual bool play(GameChoice<int> choice) = 0;
+    virtual bool play(GameChoice choice) = 0;
     virtual int checkFinished() = 0;
-    virtual vector<GameChoice<int> > validNextMoves() = 0;
+    virtual vector<GameChoice > validNextMoves() = 0;
     virtual GameState *clone() = 0;
 
     int lastMovedPlayer() {
@@ -90,7 +92,7 @@ class ConnectFourGameState : public GameState {
         cout << "(Player " << nextPlayer() << " to move)" << endl;
     }
 
-    bool play(GameChoice<int> choice) {
+    bool play(GameChoice choice) {
         int col = choice.underlying();
         if (heights[col] == board_h) {
             return false;
@@ -130,8 +132,8 @@ class ConnectFourGameState : public GameState {
         return -1;
     }
 
-    vector<GameChoice<int> > validNextMoves() {
-        vector<GameChoice<int> > result;
+    vector<GameChoice > validNextMoves() {
+        vector<GameChoice > result;
         for (int i = 0; i < board_w; i++) {
             if (heights[i] < board_h) {
                 result.push_back(i);
@@ -169,7 +171,7 @@ class ConnectFourGameState : public GameState {
 
 class MCTSNode {
   public:
-    MCTSNode(MCTSNode &parent_, GameChoice<int> choiceAppliedToParent) {
+    MCTSNode(MCTSNode &parent_, GameChoice choiceAppliedToParent) {
         state.reset(parent_.state->clone());  // copy and apply state
         state->play(choiceAppliedToParent);
         trials = 0;
@@ -187,7 +189,7 @@ class MCTSNode {
     // First return parameter is whether the ucb choice is based on all legal
     // moves being considered. (XXX: is this necessary actually?) Second return
     // parameter is the choice with maximum potential value.
-    std::pair<bool, GameChoice<int> > ucbChoice() {
+    std::pair<bool, GameChoice > ucbChoice() {
         auto validNextMoves = state->validNextMoves();
         assert(validNextMoves.size() > 0);
         auto bestChoice = validNextMoves[0];
@@ -272,7 +274,7 @@ class MCTSNode {
     // better way may be to return a shared_ptr of the newState and then really
     // just destroy everything in the map (which needs to use shared_ptr as
     // well).
-    void enter(GameChoice<int> choice) {
+    void enter(GameChoice choice) {
         // Determine the new state, create if necessary
         MCTSNode *newState;
         if (choiceMap.count(choice) == 0) {
@@ -307,7 +309,7 @@ class MCTSNode {
     int trials;
     int wins;
     int losses;
-    map<GameChoice<int>, MCTSNode*> choiceMap;
+    map<GameChoice, MCTSNode*> choiceMap;
 };
 
 namespace cli {
@@ -324,7 +326,7 @@ void interactive() {
             which = g.ucbChoice().second.underlying();
             cout << "Player 2 chose: " << which << endl;
         }
-        g.enter(GameChoice<int>(which));
+        g.enter(GameChoice(which));
         g.state->display();
         int fin = g.state->checkFinished();
         if (fin != -1) {

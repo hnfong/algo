@@ -27,7 +27,7 @@ bool p[100000001];
 int main() {
     int K;
     while (std::cin >> K) {
-        memset(p, 0, sizeof(p));
+        memset(p, 0, K);
         int z = 0;
         for (int m = 1; m*m <= K; m++) {
             for (int n = m + 1; n*n + m*m <= K; n++) {

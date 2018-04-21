@@ -1,7 +1,9 @@
 #include "big2.h"
 
+#include <algorithm>
 #include <cassert>
 #include <iostream>
+#include <random>
 #include <vector>
 
 #include "basegame.h"
@@ -12,19 +14,47 @@ using std::cout;
 using std::endl;
 using std::vector;
 
-BigTwoGameState::BigTwoGameState() : GameState(BIG_TWO_PLAYERS) {
-    memset(hands, 0, sizeof(hands));
-    memset(handSize, 0, sizeof(handSize));
+BigTwoGameState::BigTwoGameState(unsigned int seed) : GameState(BIG_TWO_PLAYERS) {
+    assert(BIG_TWO_PLAYERS * MAX_HAND == BigTwoCard::TOTAL_CARDS);
+
+    int deck[BigTwoCard::TOTAL_CARDS];
+    for (int i = 0; i < BigTwoCard::TOTAL_CARDS; i++) {
+        deck[i] = BigTwoCard::SORTED_DECK[i].getValue();
+    }
+
+    // Somehow I have not been able to make shuffle work on PlayingCard objects.
+    std::shuffle(deck, deck + BigTwoCard::TOTAL_CARDS, std::default_random_engine(seed));
+
+    initialize(deck);
 }
 
+void BigTwoGameState::initialize(int deck[]) {
+    for (int i = 0; i < BIG_TWO_PLAYERS; i++) {
+        for (int j = 0; j < MAX_HAND; j++) {
+            hand[i][j] = deck[i * MAX_HAND + j];
+        }
+        handSize[i] = MAX_HAND;
+    }
+
+    // lastPlayPlayer = 1;  // TODO: diamond 3 first move
+}
+
+BigTwoGameState::BigTwoGameState() : BigTwoGameState((unsigned int)0) {}
+
 // 52 * "{suit}{rank} "
-BigTwoGameState::BigTwoGameState(const char *dumpFmt) : GameState(2) {
+BigTwoGameState::BigTwoGameState(const char *dumpFmt) : GameState(BIG_TWO_PLAYERS) {
     int N = strlen(dumpFmt);
     assert(N == NUM_PLAYERS * MAX_HAND * 3);
+
+    assert(BIG_TWO_PLAYERS * MAX_HAND == BigTwoCard::TOTAL_CARDS);
+    int deck[BigTwoCard::TOTAL_CARDS];
+
     for (int i = 0; i < N / 3; i ++) {
-        assert(dumpFmt[i * 3 + 2] == ' ');
-        hands[i / MAX_HAND][i % MAX_HAND] = BigTwoCard(dumpFmt[i * 3], dumpFmt[i * 3 + 1]).getValue();
+        assert(dumpFmt[i * 3 + 2] == ' ' || dumpFmt[i * 3 + 2] == '\n');
+        deck[i] = BigTwoCard(dumpFmt[i * 3], dumpFmt[i * 3 + 1]).getValue();
     }
+
+    initialize(deck);
 }
 
 GameState *BigTwoGameState::clone() {
@@ -32,6 +62,12 @@ GameState *BigTwoGameState::clone() {
 }
 
 void BigTwoGameState::display() {
+    for (int i = 0; i < NUM_PLAYERS; i++) {
+        for (int j = 0; j < MAX_HAND; j++) {
+            cout << BigTwoCard::fromValue(hand[i][j]).str() << " ";
+        }
+        cout << endl;
+    }
 }
 
 bool BigTwoGameState::play(GameChoice choice) {
@@ -44,12 +80,25 @@ int BigTwoGameState::checkFinished() {
 
 vector<GameChoice > BigTwoGameState::validNextMoves() {
     vector<GameChoice> result;
+
+    // bool canPlayAnything = lastPlayPlayer == nextPlayer();
+
+    // if (canPlayAnything ||
+
+
     return result;
 }
 
 int BigTwoGameState::suggestedRounds() {
     return 1000;
 }
+
+const BigTwoCard BigTwoCard::SORTED_DECK[BigTwoCard::TOTAL_CARDS] = {
+    BigTwoCard('D', 'A'), BigTwoCard('D', '2'), BigTwoCard('D', '3'), BigTwoCard('D', '4'), BigTwoCard('D', '5'), BigTwoCard('D', '6'), BigTwoCard('D', '7'), BigTwoCard('D', '8'), BigTwoCard('D', '9'), BigTwoCard('D', 'T'), BigTwoCard('D', 'J'), BigTwoCard('D', 'Q'), BigTwoCard('D', 'K'),
+    BigTwoCard('C', 'A'), BigTwoCard('C', '2'), BigTwoCard('C', '3'), BigTwoCard('C', '4'), BigTwoCard('C', '5'), BigTwoCard('C', '6'), BigTwoCard('C', '7'), BigTwoCard('C', '8'), BigTwoCard('C', '9'), BigTwoCard('C', 'T'), BigTwoCard('C', 'J'), BigTwoCard('C', 'Q'), BigTwoCard('C', 'K'),
+    BigTwoCard('H', 'A'), BigTwoCard('H', '2'), BigTwoCard('H', '3'), BigTwoCard('H', '4'), BigTwoCard('H', '5'), BigTwoCard('H', '6'), BigTwoCard('H', '7'), BigTwoCard('H', '8'), BigTwoCard('H', '9'), BigTwoCard('H', 'T'), BigTwoCard('H', 'J'), BigTwoCard('H', 'Q'), BigTwoCard('H', 'K'),
+    BigTwoCard('S', 'A'), BigTwoCard('S', '2'), BigTwoCard('S', '3'), BigTwoCard('S', '4'), BigTwoCard('S', '5'), BigTwoCard('S', '6'), BigTwoCard('S', '7'), BigTwoCard('S', '8'), BigTwoCard('S', '9'), BigTwoCard('S', 'T'), BigTwoCard('S', 'J'), BigTwoCard('S', 'Q'), BigTwoCard('S', 'K'),
+};
 
 int BigTwoCard::getValue() const {
     int sVal;
@@ -226,4 +275,3 @@ class BigTwoCardTestCase : public TestCase {
 namespace {
 TestCase *tc2 = TestCase::registerTest(new BigTwoCardTestCase());
 }  // anonymous namespace
-

@@ -2,6 +2,7 @@
 #include <map>
 
 #include "basegame.h"
+#include "big2.h"
 #include "connect4.h"
 #include "mcts.h"
 #include "tictactoe.h"
@@ -18,6 +19,7 @@ void interactive() {
     map<int, GameState*> gameMap;
     gameMap[1] = new TicTacToeGameState();
     gameMap[2] = new ConnectFourGameState();
+    gameMap[3] = new BigTwoGameState();
 
     int which = 0;
     while (gameMap.count(which) == 0) {
@@ -25,6 +27,7 @@ void interactive() {
         cout << "0. Run tests" << endl;
         cout << "1. TicTacToe" << endl;
         cout << "2. Connect-Four" << endl;
+        cout << "3. Big Two" << endl;
         if (!(cin >> which)) {
             return;
         }

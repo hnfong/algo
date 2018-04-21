@@ -12,11 +12,17 @@ struct PlayingCard {
 
     const char suit;
     const char rank;
+    const char nul = '\0';  // for printing the suit and rank together.
+
     virtual int getValue() const = 0;
 
     // XXX: big warning here, subclasses should not add fields without overloading this.
     virtual bool operator==(const PlayingCard &x) const {
         return suit == x.suit && rank == x.rank;
+    }
+
+    const char *str() {
+        return &suit;
     }
 };
 
@@ -29,3 +35,10 @@ struct PokerCard : public PlayingCard {
         return getValue() < x.getValue();
     }
 };
+
+/*
+template <class CardType>
+struct MaxFiveCardSet<CardType> {
+    CardType cards[5];
+};
+*/

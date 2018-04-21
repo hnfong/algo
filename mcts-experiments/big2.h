@@ -11,11 +11,14 @@ struct BigTwoCard : public PlayingCard {
     bool operator<(const BigTwoCard &x) const {
         return getValue() < x.getValue();
     }
+
+    const static BigTwoCard SORTED_DECK[BigTwoCard::TOTAL_CARDS];
 };
 
 class BigTwoGameState : public GameState {
   public:
     BigTwoGameState();
+    BigTwoGameState(unsigned int seed);
     BigTwoGameState(const char *board_);
     GameState *clone();
     void display();
@@ -27,6 +30,13 @@ class BigTwoGameState : public GameState {
   private:
     const static int BIG_TWO_PLAYERS = 4;
     const static int MAX_HAND = 13;
-    int8_t hands[BIG_TWO_PLAYERS][MAX_HAND];  // suits: diamond=0, club=1, heart=2, spade=3   |||  ranks: 3=3, 4=4, 5=5, 6=6, 7=7, 8=8, 9=9, T=10, J=11, Q=12, K=13, A=14, 2=15
+    int8_t hand[BIG_TWO_PLAYERS][MAX_HAND];
     int handSize[BIG_TWO_PLAYERS];
+
+    void initialize(int deck[]);
+
+    /*
+    int lastPlayPlayer;
+    MaxFiveCardSet lastPlay;
+    */
 };

@@ -24,9 +24,8 @@ typedef GameChoiceT<int> GameChoice;
 
 class GameState {  // Abstract class.
   public:
-    GameState(int numPlayers_) {
+    GameState(int numPlayers_) : NUM_PLAYERS(numPlayers_) {
         playerLastMoved = numPlayers_;
-        numPlayers = numPlayers_;
     }
 
     virtual void display() = 0;
@@ -49,9 +48,9 @@ class GameState {  // Abstract class.
     }
 
     int nextPlayer() {
-        int result = (playerLastMoved + 1) % 2;
+        int result = (playerLastMoved + 1) % NUM_PLAYERS;
         if (result == 0) {  // one-based yuckiness
-            result = 2;
+            result = NUM_PLAYERS;
         }
         return result;
     }
@@ -62,9 +61,8 @@ class GameState {  // Abstract class.
     void setNextPlayer() {
         playerLastMoved = nextPlayer();
     }
-
+    const int NUM_PLAYERS;
   private:
     int playerLastMoved;
-    int numPlayers;
 };
 

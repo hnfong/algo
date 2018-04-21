@@ -6,6 +6,7 @@
 #include "mcts.h"
 #include "tictactoe.h"
 #include "util.h"
+#include "testcase.h"
 
 using std::cin;
 using std::cout;
@@ -21,9 +22,17 @@ void interactive() {
     int which = 0;
     while (gameMap.count(which) == 0) {
         cout << "Choose game: " << endl;
+        cout << "0. Run tests" << endl;
         cout << "1. TicTacToe" << endl;
         cout << "2. Connect-Four" << endl;
-        cin >> which;
+        if (!(cin >> which)) {
+            return;
+        }
+
+        if (which == 0) {
+            cout << "running tests" << endl;
+            TestCase::runTests();
+        }
     }
 
     MCTSNode g(gameMap[which]);

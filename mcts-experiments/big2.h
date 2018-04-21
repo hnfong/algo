@@ -3,18 +3,6 @@
 #include "basegame.h"
 #include "card.h"
 
-struct BigTwoCard : public PlayingCard {
-    BigTwoCard(char suit, char rank) : PlayingCard(suit, rank) {}
-    int getValue() const;
-    static BigTwoCard fromValue(int v);
-
-    bool operator<(const BigTwoCard &x) const {
-        return getValue() < x.getValue();
-    }
-
-    const static BigTwoCard SORTED_DECK[BigTwoCard::TOTAL_CARDS];
-};
-
 class BigTwoGameState : public GameState {
   public:
     BigTwoGameState();

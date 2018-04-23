@@ -1,0 +1,271 @@
+<script>
+
+function LOG(s) {
+    document.getElementById("logger").innerHTML += "<div>" + s + "</div>\n";
+}
+
+var SUITS = {"S":4, "H":3, "D":2, "C":1};
+var RANKS = {"3":3, "4":4, "5":5, "6":6, "7":7, "8":8, "9":9, "T":10, "J":11, "Q":12, "K":13, "A":14, "2":15};
+
+var memoize = {};
+
+function cmp(p, q) {
+    var r = RANKS[p[1]] - RANKS[q[1]];
+    if (r != 0) {
+        return r;
+    }
+    return SUITS[p[0]] - SUITS[q[0]];
+}
+
+function State() {
+}
+
+function initialstate() {
+    var s = new State();
+    s.a = ['C3', 'D4', 'H4', 'D5', 'S5', 'DQ', 'HQ', 'CK', 'SK', 'HA', 'H2'];
+    s.b = ['S6', 'C2', 'D2'];
+    s.whoMoveNext = 0;
+    s.whoPlayedLast = 0;
+    s.table = [];
+    return s;
+}
+
+State.prototype.hxxx = function() {
+    return this.a.join("") + this.b.join("") + this.whoMoveNext + this.whoPlayedLast + this.table.join("");
+};
+
+State.prototype.display = function() {
+    var opp = document.getElementById("opp");
+    var board = document.getElementById("board");
+    var me = document.getElementById("me");
+
+    opp.innerHTML = "玩家 B:" + (this.whoMoveNext == 1 ? "<img src='loading_dots.gif'>" : "") + "<br>" + nice(this.b);
+    board.innerHTML = "枱面: " + nice(this.table);
+    me.innerHTML = "玩家 A: &lt- 你<br>" + nice(this.a, true);
+};
+
+State.prototype.clone = function() {
+    var r = Object.assign(new State(), this);
+    return r;
+};
+
+State.prototype.play = function(cardsStr) {
+    if (cardsStr == "PASS") {
+        this.whoMoveNext = (this.whoMoveNext + 1) % 2;
+        return;
+    }
+
+    cards = cardsStr.split(" ");
+    for (var i = 0; i < cards.length; i++) {
+        this.a = this.a.filter(function (x) { return x != cards[i]; });
+        this.b = this.b.filter(function (x) { return x != cards[i]; });
+    }
+    this.whoPlayedLast = this.whoMoveNext;
+    this.whoMoveNext = (this.whoMoveNext + 1) % 2;
+    this.table = cards;
+};
+
+State.prototype.canPass = function() {
+    return this.whoMoveNext != this.whoPlayedLast;
+}
+
+State.prototype.validMoves = function() {
+    var r = [];
+
+    // end game
+    if (this.a.length == 0 || this.b.length == 0) {
+        return r;
+    }
+
+    if (this.canPass()) {
+        r.push("PASS");
+    }
+
+    var aa = this.whoMoveNext == 0 ? this.a : this.b;
+    if (this.whoMoveNext == this.whoPlayedLast) {
+        // all singles
+        r = r.concat(aa);
+
+        // all pairs
+        for (var i = 0; i < aa.length; i++) {
+            var pp = aa.filter(function (x) { return x[1] == aa[i][1]; });
+            if (pp.length == 2) {
+                r.push(pp.join(" "));
+                i++;  // (hack :0)
+            }
+        }
+    } else {
+
+        // single
+        if (this.table.length == 1) {
+            for (var i = 0; i < aa.length; i++) {
+                if (cmp(aa[i], this.table[0]) > 0) {
+                    r.push(aa[i]);
+                }
+            }
+        }
+
+        // pair
+        if (this.table.length == 2) {
+            for (var i = 0; i < aa.length; i++) {
+                if (cmp(aa[i], this.table[0]) > 0) {
+                    var pp = aa.filter(function (x) { return x[1] == aa[i][1]; });
+                    if (pp.length == 2) {
+                        r.push(pp.join(" "));
+                        i++;  // (hack :0)
+                    }
+                }
+            }
+        }
+    }
+
+    return r;
+};
+
+// return [whowin, bestmove]
+var counter = 0;
+
+function minimax(s, k) {
+    var x = s.hxxx();
+    if (memoize[x] !== undefined) {
+        return memoize[x];
+    }
+    // console.log(s, k);
+    counter++;
+    var mvs = s.validMoves();
+    if (mvs.length == 0) {
+        memoize[x] = [s.whoPlayedLast, null];
+        return memoize[x];
+    }
+
+    for (var i = 0; i < mvs.length; i++) {
+        var t = s.clone();
+        // t.previous = s;
+        // t.p = mvs[i];
+        t.play(mvs[i]);
+        var mmx = minimax(t, k + 1) ;
+        if (mmx[0] == s.whoMoveNext) {  // winning move
+            memoize[x] = [s.whoMoveNext, mvs[i]];
+            return memoize[x];
+        }
+    }
+
+    // console.log(s.whoMoveNext + " has no winning move :(");
+
+    memoize[x] = [(s.whoMoveNext + 1) % 2, mvs[Math.floor(Math.random() * mvs.length)]];  // no winning move...
+    return memoize[x];
+}
+
+var userSelected = [];
+var currentState = null;
+
+function mouse_over(e) {
+    e.style.opacity = 0.7;
+}
+
+function mouse_out(e) {
+    e.style.opacity = 1;
+}
+
+function sel(e, what) {
+    if (userSelected.indexOf(what) != -1) {
+        userSelected = userSelected.filter(function (x) { return x != what; });
+        e.style.borderWidth = 1;
+    } else {
+        userSelected.push(what);
+        e.style.borderWidth = 2;
+    }
+
+    // document.getElementById("debug").innerHTML = userSelected.join(" ");
+}
+
+function go(pass) {
+    if (pass && !currentState.canPass()) {
+        alert("唔可以pass");
+        return;
+    }
+
+    if (!pass) {
+        cardStr = userSelected.sort(cmp).join(" ");
+        if (currentState.validMoves().indexOf(cardStr) == -1) {
+            alert("咁樣唔出得");
+            return;
+        }
+    }
+    userSelected = [];
+
+    var logger = document.getElementById("logger");
+    var but1 = document.getElementById("but1");
+    var but2 = document.getElementById("but2");
+    var but3 = document.getElementById("but3");
+
+    var whatPlay = pass ? "PASS" : cardStr;
+    currentState.play(whatPlay);
+    logger.innerHTML += "玩家 A: " + whatPlay + "<br />\n";
+    currentState.display();
+    but1.disabled = but2.disabled = but3.disabled = true;
+    window.setTimeout(function () {
+        console.log("thinking...");
+        var mmx = minimax(currentState);
+        if (mmx[0] != 1) { // wtf
+            console.log("Cant win!!", mmx, currentState);
+        } 
+        console.log(mmx);
+        logger.innerHTML += "玩家 B: " + mmx[1] + "<br />\n";
+        currentState.play(mmx[1]);
+        currentState.display();
+        but1.disabled = but2.disabled = but3.disabled = false;
+        if (!currentState.canPass()) {
+            window.setTimeout(function () {
+                document.getElementById("board").innerHTML = "枱面: ";
+            }, 2000);
+        }
+        if (currentState.b.length == 0) {
+            window.setTimeout(function () {
+                alert("輸  咗喇你");
+            }, 1000);
+        }
+    }, 1000);
+}
+
+function nice(aa, clickable) {
+    var s = "";
+    for (var i = 0; i < aa.length; i++) {
+        // s += aa[i].replace("S", "♠").replace("H", "♥").replace("D", "♦").replace("C", "♣") + " ";
+        // https://github.com/hayeah/playing-cards-assets.git
+        if (clickable) {
+            s += "<img class='card' onmouseover='mouse_over(this)' onmouseout='mouse_out(this)' onclick='sel(this, \""+aa[i]+"\")' src='png/" + aa[i] + ".png'>";
+        } else {
+            s += "<img class='card' src='png/" + aa[i] + ".png'>";
+        }
+    }
+    return s;
+}
+
+
+window.onload = function() {
+    currentState = initialstate();
+    currentState.display();
+};
+
+</script>
+
+<html>
+<head>
+<title>鋤大2殘局大挑戰 (你輸梗)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="content-type" content="text/html; charset=utf8">
+</head>
+<style>
+.card { width: 44px; height: 64px; border-style:solid; border-width: 1px; border-color: #888; margin: 1px 1px; }
+.cat { margin: 1em 0; min-height: 100px; }
+</style>
+
+<body>
+<div class="cat" id="opp"></div>
+<div class="cat" id="board"></div>
+<div class="cat" id="me"></div>
+<button id="but1" onclick="go(0)">出牌</button> / <button id="but2" onclick="go(1)">PASS</button> / <button id="but3" onclick="if (confirm('真係重新玩過?')) { window.location.reload(); }">重新嚟過</button>
+<div class="cat" id="logger"></div>
+
+</body>

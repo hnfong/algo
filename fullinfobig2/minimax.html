@@ -77,10 +77,6 @@ State.prototype.validMoves = function() {
         return r;
     }
 
-    if (this.canPass()) {
-        r.push("PASS");
-    }
-
     var aa = this.whoMoveNext == 0 ? this.a : this.b;
     if (this.whoMoveNext == this.whoPlayedLast) {
         // all singles
@@ -92,6 +88,17 @@ State.prototype.validMoves = function() {
             if (pp.length == 2) {
                 r.push(pp.join(" "));
                 i++;  // (hack :0)
+            }
+        }
+
+        // Missed case
+        if (aa.length >= 5) {
+            if (aa.indexOf("HA") != -1 && aa.indexOf("H2") != -1 && aa.indexOf("C3") != -1 && (aa.indexOf("D4") != -1 || aa.indexOf("H4") != -1) && (aa.indexOf("D5") != -1 || aa.indexOf("S5") != -1)) {
+                if (aa.indexOf("D4") != -1 && aa.indexOf("D5") != -1) { r.push("C3 D4 D5 HA H2"); }
+                if (aa.indexOf("H4") != -1 && aa.indexOf("D5") != -1) { r.push("C3 H4 D5 HA H2"); }
+                if (aa.indexOf("D4") != -1 && aa.indexOf("S5") != -1) { r.push("C3 D4 S5 HA H2"); }
+                if (aa.indexOf("H4") != -1 && aa.indexOf("S5") != -1) { r.push("C3 H4 S5 HA H2"); }
+
             }
         }
     } else {
@@ -117,6 +124,10 @@ State.prototype.validMoves = function() {
                 }
             }
         }
+    }
+
+    if (this.canPass()) {
+        r.push("PASS");
     }
 
     return r;

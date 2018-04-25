@@ -55,7 +55,7 @@ State.prototype.play = function(cardsStr) {
         return;
     }
 
-    cards = cardsStr.split(" ");
+    var cards = cardsStr.split(" ");
     for (var i = 0; i < cards.length; i++) {
         this.a = this.a.filter(function (x) { return x != cards[i]; });
         this.b = this.b.filter(function (x) { return x != cards[i]; });
@@ -63,6 +63,36 @@ State.prototype.play = function(cardsStr) {
     this.whoPlayedLast = this.whoMoveNext;
     this.whoMoveNext = (this.whoMoveNext + 1) % 2;
     this.table = cards;
+};
+
+State.prototype.unplay = function(cardsStr, savedTable, savedPlayedLast) {
+    if (cardsStr == "PASS") {
+        this.whoMoveNext = (this.whoMoveNext + 1) % 2;
+        return;
+    }
+
+    this.table = savedTable;
+    this.whoMoveNext = (this.whoMoveNext + 1) % 2;
+    this.whoPlayedLast = savedPlayedLast;
+
+    var cards = cardsStr.split(" ");
+    if (cards.length == 1) {
+        if (this.whoMoveNext == 0) {
+            this.a.push(cards[0]);
+            this.a.sort(cmp);
+        } else {
+            this.b.push(cards[0]);
+            this.b.sort(cmp);
+        }
+    } else {
+        if (this.whoMoveNext == 0) {
+            this.a = this.a.concat(cards);
+            this.a.sort(cmp);
+        } else {
+            this.b = this.b.concat(cards);
+            this.b.sort(cmp);
+        }
+    }
 };
 
 State.prototype.canPass = function() {
@@ -194,10 +224,13 @@ function minimax(s, k) {
 
     for (var i = 0; i < mvs.length; i++) {
         var t = s.clone();
+        // var sTable = s.table;
+        // var sPlayLast = s.whoPlayedLast;
         // t.previous = s;
         // t.p = mvs[i];
         t.play(mvs[i]);
         var mmx = minimax(t, k + 1) ;
+        // t.unplay(mvs[i], sTable, sPlayLast);
         if (mmx[0] == s.whoMoveNext) {  // winning move
             best = [s.whoMoveNext, mvs[i]];
             memoize[x] = best;
@@ -279,6 +312,7 @@ function sel(e, what) {
 }
 
 function go(pass) {
+    console.log(new Date());
     if (pass && !currentState.canPass()) {
         alert("唔可以pass");
         return;
@@ -318,6 +352,7 @@ function go(pass) {
     window.setTimeout(function () {
         console.log("thinking...");
         var mmx = minimax(currentState);
+    console.log(new Date());
         var move = mmx[1];
         if (mmx[0] != 1) { // wtf
             console.log("Cant win!!", mmx, currentState);

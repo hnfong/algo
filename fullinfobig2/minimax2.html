@@ -316,6 +316,7 @@ function go(pass) {
     but1.disabled = but2.disabled = but3.disabled = but4.disabled = true;
 
     if (currentState.validMoves() == 0) {
+        document.getElementById("congratsimage").src  = "congrats.jpg";
         document.getElementById("congrats").style.display = "block";
         window.setTimeout(function () {
         alert("你贏咗喇！我真係恭喜你！");
@@ -397,7 +398,7 @@ function swap() {
 </style>
 
 <body>
-<div style="display: none; position: absolute; opacity: 0.3" id="congrats"><img src="congrats.jpg"></div>
+<div style="display: none; position: absolute; opacity: 0.3" id="congrats"><img id="congratsimage" src="game.jpg"></div>
 <div id="banner" style="background-color: #EEF; margin: 1em 0; font-style: italic; font-size: 12px; text-align: center">呢個係加強版！記住玩咗<a href="minimax.html">初級版</a>先好嚟挑戰呢個！今舖你都係輸梗架！（好似係</div>
 <div class="cat" id="opp"></div>
 <div class="cat" id="board"></div>

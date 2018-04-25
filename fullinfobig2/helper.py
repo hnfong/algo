@@ -47,3 +47,13 @@ gen("CQ HQ SQ CK SK")
 gen("CQ HQ DK CK SK")
 gen("CQ SQ DK CK SK")
 gen("HQ SQ DK CK SK")
+
+gen("H3 D4 H5 D6 D2")
+gen("H3 D4 H5 S6 D2")
+gen("H3 D4 S5 D6 D2")
+gen("H3 D4 S5 S6 D2")
+
+gen("H3 S4 H5 D6 D2")
+gen("H3 S4 H5 S6 D2")
+gen("H3 S4 S5 D6 D2")
+gen("H3 S4 S5 S6 D2")

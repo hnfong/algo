@@ -79,26 +79,6 @@ State.prototype.validMoves = function() {
 
     var aa = this.whoMoveNext == 0 ? this.a : this.b;
     if (this.whoMoveNext == this.whoPlayedLast) {
-        // all singles
-        r = r.concat(aa);
-
-        // all pairs
-        for (var i = 0; i < aa.length; i++) {
-            var pp = aa.filter(function (x) { return x[1] == aa[i][1]; });
-            if (pp.length == 2) {
-                r.push(pp.join(" "));
-                i++;  // (hack :0)
-            }
-            if (pp.length == 3) {
-                r.push(pp.join(" "));
-                r.push(pp.slice(0, 2).join(" "));
-                r.push(pp.slice(1, 3).join(" "));
-                r.push([pp[0], pp[2]].join(" "));
-                i++;  // (hack :0)
-                i++;  // (hack :0)
-            }
-        }
-
         // Missed case
         if (aa.length >= 5) {
 if (aa.indexOf('H3') != -1 && aa.indexOf('D4') != -1 && aa.indexOf('H5') != -1 && aa.indexOf('D6') != -1 && aa.indexOf('C7') != -1) { r.push("H3 D4 H5 D6 C7"); }
@@ -136,6 +116,26 @@ if (aa.indexOf('CQ') != -1 && aa.indexOf('HQ') != -1 && aa.indexOf('DK') != -1 &
 if (aa.indexOf('CQ') != -1 && aa.indexOf('SQ') != -1 && aa.indexOf('DK') != -1 && aa.indexOf('CK') != -1 && aa.indexOf('SK') != -1) { r.push("CQ SQ DK CK SK"); }
 if (aa.indexOf('HQ') != -1 && aa.indexOf('SQ') != -1 && aa.indexOf('DK') != -1 && aa.indexOf('CK') != -1 && aa.indexOf('SK') != -1) { r.push("HQ SQ DK CK SK"); }
         }
+        // all singles
+        r = r.concat(aa);
+
+        // all pairs
+        for (var i = 0; i < aa.length; i++) {
+            var pp = aa.filter(function (x) { return x[1] == aa[i][1]; });
+            if (pp.length == 2) {
+                r.push(pp.join(" "));
+                i++;  // (hack :0)
+            }
+            if (pp.length == 3) {
+                r.push(pp.join(" "));
+                r.push(pp.slice(0, 2).join(" "));
+                r.push(pp.slice(1, 3).join(" "));
+                r.push([pp[0], pp[2]].join(" "));
+                i++;  // (hack :0)
+                i++;  // (hack :0)
+            }
+        }
+
     } else {
         // Did not do more than pairs because player B cannot overtake 5 cards.
 
@@ -199,15 +199,60 @@ function minimax(s, k) {
         t.play(mvs[i]);
         var mmx = minimax(t, k + 1) ;
         if (mmx[0] == s.whoMoveNext) {  // winning move
-            memoize[x] = [s.whoMoveNext, mvs[i]];
-            return memoize[x];
+            best = [s.whoMoveNext, mvs[i]];
+            memoize[x] = best;
+            return best;
         }
     }
 
-    // console.log(s.whoMoveNext + " has no winning move :(");
-
-    memoize[x] = [(s.whoMoveNext + 1) % 2, mvs[Math.floor(Math.random() * mvs.length)]];  // no winning move...
+    memoize[x] = [(s.whoMoveNext + 1) % 2, mvs[0]];  // no winning move...
     return memoize[x];
+}
+
+// Return a move that opponents have most possibility to err.
+function leastBadMove(s) {
+
+    var mvs = s.validMoves();
+    var bestWins = 0;
+    var leastBad = 0;
+
+    // No winning move, try all moves and see what is goodest
+    for (var i = 0; i < mvs.length; i++) {
+        var t = s.clone();
+        var wins = 0;
+
+        t.play(mvs[i]);   // My play
+
+        var mvs2 = t.validMoves();  // What can opponent do?
+
+        if (mvs2.length == 0) {
+            // this shouldn't happen
+            console.log("?!", s, mvs[i]);
+            return mvs[0];
+        }
+
+        // Think one step ahead
+        for (var j = 0; j < mvs2.length; j++) {
+            var t2 = t.clone();
+            t2.play(mvs2[j]);  // Opponent's play
+            var mmx = minimax(t2, 1);  // should already be cached
+            if (mmx[0] == s.whoMoveNext) {
+                wins++;
+                // console.log(mvs[i], "=>", mvs2[j], mmx[0], "will win");
+            } else {
+                // console.log(mvs[i], "=>", mvs2[j], mmx[0], "will win");
+            }
+
+        }
+        // console.log(mvs[i], wins, mvs2.length, wins / mvs2.length);
+
+        if (wins / mvs2.length > bestWins) {
+            leastBad = i;
+            bestWins = wins / mvs2.length;
+        }
+    }
+
+    return mvs[leastBad];
 }
 
 var userSelected = [];
@@ -247,29 +292,43 @@ function go(pass) {
             return;
         }
     }
+    document.getElementById("but4").style.display = "none";
     userSelected = [];
 
     var logger = document.getElementById("logger");
     var but1 = document.getElementById("but1");
     var but2 = document.getElementById("but2");
     var but3 = document.getElementById("but3");
+    var but4 = document.getElementById("but4");
 
     var whatPlay = pass ? "PASS" : cardStr;
     currentState.play(whatPlay);
     logger.innerHTML += "玩家 A: " + whatPlay + "<br />\n";
     currentState.display();
-    but1.disabled = but2.disabled = but3.disabled = true;
+    but1.disabled = but2.disabled = but3.disabled = but4.disabled = true;
+
+    if (currentState.validMoves() == 0) {
+        document.getElementById("congrats").style.display = "block";
+        window.setTimeout(function () {
+        alert("你贏咗喇！我真係恭喜你！");
+        }, 200);
+        return;
+    }
+
     window.setTimeout(function () {
         console.log("thinking...");
         var mmx = minimax(currentState);
+        var move = mmx[1];
         if (mmx[0] != 1) { // wtf
             console.log("Cant win!!", mmx, currentState);
+            move = leastBadMove(currentState);
         } 
         console.log(mmx);
-        logger.innerHTML += "玩家 B: " + mmx[1] + "<br />\n";
-        currentState.play(mmx[1]);
+        logger.innerHTML += "玩家 B: " + move + "<br />\n";
+        currentState.play(move);
         currentState.display();
-        but1.disabled = but2.disabled = but3.disabled = false;
+        but1.disabled = but2.disabled = but3.disabled = but4.disabled = false;
+        document.getElementById("banner").style.display = "none";
         if (!currentState.canPass()) {
             window.setTimeout(function () {
                 document.getElementById("board").innerHTML = "枱面: ";
@@ -277,7 +336,7 @@ function go(pass) {
         }
         if (currentState.b.length == 0) {
             window.setTimeout(function () {
-                alert("輸  咗喇你");
+                alert("你又輸  咗喇...");
             }, 1000);
         }
     }, 1000);
@@ -303,24 +362,40 @@ window.onload = function() {
     currentState.display();
 };
 
+function swap() {
+    var x = currentState.a;
+    currentState.a = currentState.b;
+    currentState.b = x;
+    currentState.whoMoveNext = (currentState.whoMoveNext + 1) % 2;
+    currentState.whoPlayedLast = (currentState.whoPlayedLast + 1) % 2;
+    var whatPlay = "H7";
+    currentState.play(whatPlay);
+    logger.innerHTML += "玩家 B: " + whatPlay + "<br />\n";
+    currentState.display();
+    document.getElementById("but4").style.display = "none";
+};
+
 </script>
 
 <html>
 <head>
-<title>【勁版】鋤大2殘局大挑戰 (你輸梗)</title>
+<title>鋤大2殘局大挑戰2.0 (你輸梗... 好似係)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="content-type" content="text/html; charset=utf8">
 </head>
 <style>
-.card { width: 44px; height: 64px; border-style:solid; border-width: 1px; border-color: #888; margin: 1px 1px; }
-.cat { margin: 1em 0; min-height: 100px; }
+.card { width: 40px; height: 59px; border-style:solid; border-width: 1px; border-color: #888; margin: 1px 1px; }
+.cat { margin: 1em 0; min-height: 80px; }
 </style>
 
 <body>
+<div style="display: none; position: absolute; opacity: 0.3" id="congrats"><img src="congrats.jpg"></div>
+<div id="banner" style="background-color: #EEF; margin: 1em 0; font-style: italic; font-size: 12px; text-align: center">呢個係加強版！記住玩咗<a href="minimax.html">初級版</a>先好嚟挑戰呢個！今舖你都係輸梗架！（好似係</div>
 <div class="cat" id="opp"></div>
 <div class="cat" id="board"></div>
 <div class="cat" id="me"></div>
-<button id="but1" onclick="go(0)">出牌</button> / <button id="but2" onclick="go(1)">PASS</button> / <button id="but3" onclick="if (confirm('真係重新玩過?')) { window.location.reload(); }">重新嚟過</button>
+<button id="but1" onclick="go(0)">出牌</button> / <button id="but2" onclick="go(1)">PASS</button> / <button id="but3" onclick="if (confirm('真係重新玩過?')) { window.location.reload(); }">重新嚟過</button> . . . <button id="but4" onclick="swap()">我唔信邪！換位！</button>
 <div class="cat" id="logger"></div>
 
+<div style="color: #888; font-style: italic; text-align: right; margin-right: 2em;">特別鳴謝：Helic、仆擇</div>
 </body>

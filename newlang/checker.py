@@ -63,6 +63,14 @@ def compile_with_cmd(lang, args):
     return True
 
 def check_for_lang(lang, problem, tcglob=None):
+    if lang == 'ALL':
+        q = True
+        for ll in ('c', 'cpp', 'py', 'bash'):
+            src = os.path.sep.join([problem, "solution." + ll])
+            if os.path.exists(src):
+                q = q and check_for_lang(ll, problem, tcglob)
+        return q
+
     # TODO: modularize this later
     src = os.path.sep.join([problem, "solution." + lang])
     binary = os.path.sep.join([problem, "solution." + lang + ".exe"])
@@ -82,17 +90,20 @@ def check_for_lang(lang, problem, tcglob=None):
         raise ValueError("Unsupported language: %s" % lang)
 
     LOG(f'Lang={lang} Problem={problem} OverallResult={result}')
-    sys.exit(0 if result else 1)
+    return result
+
 
 def main(args):
     if len(args) == 3:
         LOG(f"Language={args[1]} Problem={args[2]}")
-        check_for_lang(args[1], args[2])
+        result = check_for_lang(args[1], args[2])
     elif len(args) > 3:
         LOG(f"Language={args[1]} Problem={args[2]} Cases={args[3]}")
-        check_for_lang(args[1], args[2], args[3])
+        result = check_for_lang(args[1], args[2], args[3])
     else:
         LOG(f'Usage: {args[0]} lang problem [testcase-rattern]')
+
+    sys.exit(0 if result else 1)
 
 if __name__ == "__main__":
     main(sys.argv)

@@ -7,4 +7,5 @@ also be a set of sample inputs `input[0-9]+.txt` and expected output
 `output[0-9]+.txt`. There may be a `TestCases.md` to explain/annotate the test
 cases. The Makefile will try to run everything it knows how to run.
 
-
+The \*.exe files are not Windows executables, just a way to identify generated
+binary files for easier handling (eg. gitignore and cleanups)

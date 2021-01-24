@@ -7,7 +7,7 @@ import subprocess
 import sys
 
 LOG_level = ["DEBUG", "INFO", "WARNING", "ERROR"]
-LOG_default = 1
+LOG_default = 0
 
 def LOG(s, lvl=1):
     if (lvl >= LOG_default):
@@ -52,15 +52,37 @@ def check_with_cmd(lang, args, problem, tcglob):
 
     return overall
 
+def compile_with_cmd(lang, args):
+    p = subprocess.Popen(args, shell=False)
+    p.communicate()
+
+    if p.returncode != 0:
+        ERROR(f"Compile command returned non-zero exit code: {args}")
+        return False
+
+    return True
+
 def check_for_lang(lang, problem, tcglob=None):
     # TODO: modularize this later
+    src = os.path.sep.join([problem, "solution." + lang])
+    binary = os.path.sep.join([problem, "solution." + lang + ".exe"])
+
     if lang == 'bash':
         # Bash script does not need compilation
-        result = check_with_cmd(lang, [os.path.sep.join([problem, "solution.bash"]), ], problem, tcglob)
-        LOG(f'Lang={lang} Problem={problem} OverallResult={result}')
-        sys.exit(0 if result else 1)
+        result = compile_with_cmd(lang, ['cp', src, binary])
+        result = compile_with_cmd(lang, ['chmod', '0755', binary])
+        result = check_with_cmd(lang, [binary, ], problem, tcglob)
+    elif lang == 'cpp':
+        result = compile_with_cmd(lang, ['clang++', '-std=c++17', '-o', binary, src])
+        result = result and check_with_cmd(lang, [binary, ], problem, tcglob)
+    elif lang == 'c':
+        result = compile_with_cmd(lang, ['clang', '-o', binary, src])
+        result = result and check_with_cmd(lang, [binary, ], problem, tcglob)
     else:
         raise ValueError("Unsupported language: %s" % lang)
+
+    LOG(f'Lang={lang} Problem={problem} OverallResult={result}')
+    sys.exit(0 if result else 1)
 
 def main(args):
     if len(args) == 3:

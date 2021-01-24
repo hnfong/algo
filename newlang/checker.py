@@ -65,7 +65,7 @@ def compile_with_cmd(lang, args):
 def check_for_lang(lang, problem, tcglob=None):
     if lang == 'ALL':
         q = True
-        for ll in ('c', 'cpp', 'py', 'bash'):
+        for ll in ('c', 'cpp', 'py', 'unix'):
             src = os.path.sep.join([problem, "solution." + ll])
             if os.path.exists(src):
                 q = q and check_for_lang(ll, problem, tcglob)
@@ -75,7 +75,7 @@ def check_for_lang(lang, problem, tcglob=None):
     src = os.path.sep.join([problem, "solution." + lang])
     binary = os.path.sep.join([problem, "solution." + lang + ".exe"])
 
-    if lang in ('bash', 'py'):
+    if lang in ('unix', 'py'):
         # Bash script does not need compilation
         result = compile_with_cmd(lang, ['cp', src, binary])
         result = compile_with_cmd(lang, ['chmod', '0755', binary])

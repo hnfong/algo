@@ -1,0 +1,14 @@
+#!/bin/dash
+
+move() {
+    local N=$1
+    if [ $N -eq "0" ]; then
+        return
+    fi
+    move $((N - 1)) $2 $4 $3
+    echo $2 $3
+    move $((N - 1)) $4 $3 $2
+}
+
+read N
+move $N A C B

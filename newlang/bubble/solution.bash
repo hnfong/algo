@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# This is actually not a solution in bash script per-se, but more like a Unix
+# toolkit solution. I'm sure we can actually write bubble sort with bash
+# arrays... (urgh...)
+
+INPUT=$1
+shift
+
+sort -n $INPUT

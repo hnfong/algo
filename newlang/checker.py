@@ -67,7 +67,7 @@ def check_for_lang(lang, problem, tcglob=None):
     src = os.path.sep.join([problem, "solution." + lang])
     binary = os.path.sep.join([problem, "solution." + lang + ".exe"])
 
-    if lang == 'bash':
+    if lang in ('bash', 'py'):
         # Bash script does not need compilation
         result = compile_with_cmd(lang, ['cp', src, binary])
         result = compile_with_cmd(lang, ['chmod', '0755', binary])

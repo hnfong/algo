@@ -2,6 +2,7 @@
 
 import datetime
 import glob
+import gzip
 import os
 import subprocess
 import sys
@@ -34,7 +35,20 @@ def run_test_case(args, input_file, output_file):
         if p.returncode != 0:
             ERROR("program exited with non-zero code: %d" % p.returncode)
             return False
-        return stdout.strip() == open(output_file, "rb").read().strip()
+
+        opener = None
+        foundfile = None
+        if os.path.isfile(output_file):
+            opener = open
+            foundfile = output_file
+        elif os.path.isfile(output_file + ".gz"):
+            opener = gzip.open
+            foundfile = output_file + ".gz"
+
+        if opener is None:
+            ERROR(f"File not found: {output_file} or {output_file}.gz")
+
+        return stdout.strip() == opener(foundfile, "rb").read().strip()
 
 def check_with_cmd(lang, args, problem, tcglob):
     if tcglob is not None:

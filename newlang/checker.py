@@ -65,7 +65,7 @@ def compile_with_cmd(lang, args):
 def check_for_lang(lang, problem, tcglob=None):
     if lang == 'ALL':
         q = True
-        for ll in ('c', 'cpp', 'py', 'unix'):
+        for ll in ('c', 'cpp', 'py', 'unix', 'v'):
             src = os.path.sep.join([problem, "solution." + ll])
             if os.path.exists(src):
                 q = q and check_for_lang(ll, problem, tcglob)
@@ -85,6 +85,9 @@ def check_for_lang(lang, problem, tcglob=None):
         result = result and check_with_cmd(lang, [binary, ], problem, tcglob)
     elif lang == 'c':
         result = compile_with_cmd(lang, ['clang', '-o', binary, src])
+        result = result and check_with_cmd(lang, [binary, ], problem, tcglob)
+    elif lang == 'v':
+        result = compile_with_cmd(lang, ['v', '-o', binary, src])
         result = result and check_with_cmd(lang, [binary, ], problem, tcglob)
     else:
         raise ValueError("Unsupported language: %s" % lang)

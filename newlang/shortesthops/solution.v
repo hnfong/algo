@@ -4,6 +4,26 @@ struct GlobalState {
     mut:
         bt map[int]int
         w map[int][]int
+        pbuf []string
+}
+
+// This echo() basically functions as "print()". However, there seems to be a
+// couple issues with println and print - - print() and println() seem to be
+// using different buffers, when the output is not to a terminal the suspected
+// buffering issue seems to sometimes cause out of order output.... - somehow
+// just calling print() on a lot of small chunks of output is much slower than
+// expected. To the point that this implementation is actually faster.
+fn (mut g GlobalState) echo(s string) {
+    g.pbuf << s
+    if g.pbuf.len > 100 {
+        print(g.pbuf.join(""))
+        g.pbuf = []string{}
+    }
+}
+
+fn (mut g GlobalState) flush() {
+    print(g.pbuf.join(""))
+    g.pbuf = []string{}
 }
 
 struct Edge {
@@ -32,12 +52,12 @@ fn (mut q Queue) pop() Edge {
     return res
 }
 
-fn backtrack(g &GlobalState, k int) {
+fn backtrack(mut g GlobalState, k int) {
     if g.bt[k] > 0 {
-        backtrack(g, g.bt[k])
-        print(' ${k}')
+        backtrack(mut g, g.bt[k])
+        g.echo(' ${k}')
     } else {
-        print('${k}')
+        g.echo('${k}')
     }
 }
 
@@ -78,12 +98,13 @@ fn main() {
 
     for i := 2; i <= n; i++ {
         if g.bt[i] > 0 {
-            // FIXME: output seems slow, maybe I should implement a stringbuffer myself? @_@
-            backtrack(g, i)
-            print('\n')  // as of writing println and print seems to be using different buffers...
+            backtrack(mut g, i)
+            g.echo('\n')
         } else {
-            print('0\n')
+            g.echo('0\n')
         }
     }
+
+    g.flush()
 }
 

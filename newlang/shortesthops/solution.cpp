@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <vector>
 #include <queue>
@@ -25,6 +26,10 @@ int main() {
     cin >> n;
     while (cin >> a >> b) {
         w[a].push_back(b);
+    }
+
+    for (int i = 1; i <= n; i++) {
+        sort(w[i].begin(), w[i].end());
     }
 
     // searching from 1

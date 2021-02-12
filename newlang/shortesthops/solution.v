@@ -38,7 +38,7 @@ struct Queue {
         sidx int
 }
 
-fn (mut q Queue) len() int {
+fn (q Queue) len() int {
     return q.data.len - q.sidx
 }
 

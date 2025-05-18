@@ -1,0 +1,6 @@
+greater(_, [], []) :- !.
+greater(A,[B|C],D) :-
+	(B >= A),
+		append(D, [B], E), greater(A,C,E);
+		greater(A,C,D).
+

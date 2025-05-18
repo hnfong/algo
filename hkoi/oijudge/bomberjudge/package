@@ -1,0 +1,22 @@
+#!/bin/sh
+
+VERSION_MAJOR=`cat version | sed -s "s/\..*//"`
+VERSION_MINOR=`cat version | sed -s "s/^[0-9]*\.//" | sed -s "s/\..*//"`
+VERSION_SUB=`cat version | sed -s "s/^[0-9]*\.[0-9]*\.//"`
+
+NEW_VERSION="$VERSION_MAJOR"."$VERSION_MINOR"."$(($VERSION_SUB+1))"
+
+echo packaging $NEW_VERSION ...
+
+pushd ..
+if [ -f bomberjudge-"$NEW_VERSION" ]; then
+	rm -f bomberjudge-"$NEW_VERSION"
+fi
+ln -s bomberjudge bomberjudge-"$NEW_VERSION"  &&
+tar chvzf bomberjudge-"$NEW_VERSION".tgz ./bomberjudge-"$NEW_VERSION"  &&
+rm -f bomberjudge-"$NEW_VERSION" &&
+
+popd
+
+echo $NEW_VERSION > version
+

@@ -1,0 +1,34 @@
+%-------------------------------------------------------------------------------
+% Created by CHAN Siu Man
+%
+% TrainigTask Style file for HKOI
+%
+% to be used with LaTeX2HTML
+%-------------------------------------------------------------------------------
+\RequirePackage{color}
+\RequirePackage{html}
+\RequirePackage[latex2html]{graphicx}
+
+\definecolor{skyblue}{rgb}{0, 0.4375, 0.90625}
+\definecolor{lightblue}{rgb}{0.75, 1, 1}
+
+\providecommand{\csection}[1]{%
+\section[#1]{\textcolor{skyblue}{#1}}%
+}
+
+\providecommand{\csubsection}[1]{%
+\subsection[#1]{\textcolor{skyblue}{#1}}%
+}
+
+\providecommand{\csubsubsection}[1]{%
+\subsubsection[#1]{\textcolor{skyblue}{#1}}%
+}
+
+\providecommand{\ctitle}[1]{%
+\title{#1}%
+\begin{center}%
+\begin{tabular}[ht]{c}
+\textbf{\Large{\textcolor{lightblue}{#1}}}%
+\end{tabular}
+\end{center}%
+}

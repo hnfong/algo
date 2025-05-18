@@ -1,0 +1,48 @@
+Back to secondary school chemistry.
+
+The secondary school chemistry laboratory is always a fun place, with all the mysterious chemicals that have different properties. For example, Copper(II) Sulphate is blue, Sodium Chloride (common salt) is white, and the metals are shiny and silverish.
+
+Ooops. One day the labels on the chemical containers somehow disappeared! Your chemistry teacher thinks of a clever way to recover the labels. Since he is proficient in Chemistry, he knows perfectly well about the properties of the chemicals. He gives you the list of chemical names and their respective properties. He asks you to perform various tests on the chemicals to check their properties (under his supervision of course!) You now have the results, but you are now too tired too process it, after all the work. So you write a program to process the results.
+
+Input:
+
+The first line of input consists of two integers, N and M.
+
+The next N lines is a list of chemicals and their respective properties, in the format:
+
+<name> <property1> <property2> <property3> <property4> <property5>
+
+For simplicty, Chemical names are exactly 2 characters. All property values are uppercase characters, and there are exactly 5 properties for each chemical. You may assume the properties are distinct.
+
+The next M lines is a list of test results. The format is:
+
+<property> <yes/no>
+
+Output:
+
+There should be only one line in the output, which is the correct chemical name for the chemical being tested. If there is no valid chemical name, output "Unknown" (case sensitive). 
+
+
+Sample Input:
+
+6 10
+cx C M L I U
+Sh E R M A N
+KF T S A N G
+Si L I C O N
+Tc C H U N G
+RS R O I S C
+C yes
+T no
+L yes
+M yes
+R no
+G no
+H no
+I yes
+N no
+U yes
+
+Sample Output:
+
+cx

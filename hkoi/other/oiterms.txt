@@ -1,0 +1,25 @@
+Sorting -
+	Bubble
+	Quick
+	Shell
+	Insertion
+	Counting
+	Heap
+	Merge
+	Bucket
+	... etc
+Recursion
+Depth First Search (DFS)
+Exhaustion
+Breadth First Search (BFS)
+Runtime
+Order (O(?))
+Dynamic Programming (DyP, or DP)
+High Precision Arithmetic (HPA)
+Data Processing (DaP)
+Maximum Flow
+Stack
+Queue
+Heap
+List
+

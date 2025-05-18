@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<!-- ================================================================================  -->
+<!-- This HTML file was created by AbiWord.                                            -->
+<!-- AbiWord is a free, Open Source word processor.                                    -->
+<!-- More information about AbiWord is available at http://www.abisource.com                -->
+<!-- ================================================================================  -->
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>/home/sydneyfong/hkoi/questions/silicon/old/magnify.html</title>
+  <style type="text/css">
+   <!--
+@media print {
+	body {
+		padding-top: 1.000000in;
+		padding-bottom: 1.000000in;
+		padding-left: 1.000000in;
+		padding-right: 1.000000in;
+	}
+}
+body {
+	font-family: 'Times New Roman';
+	font-style: normal;
+	text-indent: 0in;
+	widows: 2;
+	text-align: left;
+	font-weight: normal;
+	font-variant: normal;
+	color: #000000;
+	text-decoration: none;
+	font-size: 12pt;
+}
+table {
+	width: 100%;
+}
+td {
+	border-collapse: collapse;
+	text-align: left;
+	vertical-align: top;
+}
+p, h1, h2, h3 {
+	text-align: left;
+	font-size: 12pt;
+	font-family: 'Times New Roman';
+	vertical-align: normal;
+	color: #000000;
+}
+     -->
+  </style>
+ </head>
+ <body>
+  <div>
+   <p dir="ltr" style="text-align: center;   "><span style="font-weight: bold; font-size: 14pt">Magnify</span></p>
+   <p dir="ltr" style="text-align: left;   "></p>
+   <p dir="ltr" style="text-align: left;   ">Accessibility options to assist the disabled in computer applications is becoming increasingly important. In some places, Laws have been made to ensure that everybody will be able to access the same information, even for people with disabilities. One of these options to enlarge a portion of the screen for people with eye weaknesses. Your task is to write a simple program that magnifies text graphics.</p>
+   <p dir="ltr" style="text-align: left;   "></p>
+   <p dir="ltr" style="text-align: left;   "><span style="font-weight: bold">Input</span></p>
+   <p dir="ltr" style="text-align: left;   ">The first line of the input file MAGNIFY.IN contains 3 integers, <span style="font-weight: bold; font-style: italic">w</span>, <span style="font-weight: bold; font-style: italic">h</span>, <span style="font-weight: bold; font-style: italic">z</span>. Starting on the 2nd line is a <span style="font-weight: bold; font-style: italic">w</span>*<span style="font-weight: bold; font-style: italic">h</span> size text graphic, (i.e. <span style="font-weight: bold; font-style: italic">h</span> lines with <span style="font-weight: bold; font-style: italic">w</span> characters on each line.) <span style="font-weight: bold; font-style: italic">z</span> is the magnification factor.</p>
+   <p dir="ltr" style="text-align: left;   "></p>
+   <p dir="ltr" style="text-align: left;   "><span style="font-weight: bold">Output</span></p>
+   <p dir="ltr" style="text-align: left;   ">The output file MAGNIFY.OUT should be a <span style="font-weight: bold; font-style: italic">wz</span>*<span style="font-weight: bold; font-style: italic">hz</span> graphic, magnified from the input. Each 1*1 character in the input should be magnified to <span style="font-weight: bold; font-style: italic">z</span>*<span style="font-weight: bold; font-style: italic">z</span> characters. The sample output should demonstrate this clearly.</p>
+   <p dir="ltr" style="text-align: left;   "></p>
+   <p dir="ltr" style="text-align: left;   "><span style="font-weight: bold">Constraints</span></p>
+   <p dir="ltr" style="text-align: left;   ">1 &lt;= <span style="font-weight: bold; font-style: italic">w</span>,<span style="font-weight: bold; font-style: italic">h</span> &lt;= 100</p>
+   <p dir="ltr" style="text-align: left;   ">1 &lt;= <span style="font-weight: bold; font-style: italic">z</span> &lt;= 10</p>
+   <p dir="ltr" style="text-align: left;   ">The output file will not exceed 500K</p>
+   <p dir="ltr" style="text-align: left;   ">All characters in the text graphic are alphanumeric (A-Z, a-z, 0-9)</p>
+   <p dir="ltr" style="text-align: left;   "></p>
+   <p dir="ltr" style="text-align: left;   "><span style="font-weight: bold">Sample Input 1</span></p>
+<pre style='font-family:courier new'>
+22 5 2
+H   H K  K  OOO  IIIII
+H   H K K  O   O   I  
+HHHHH KK   O   O   I  
+H   H K K  O   O   I  
+H   H K  K  OOO  IIIII
+</pre>
+
+   <p dir="ltr" style="text-align: left;   "><span style="font-weight: bold">Sample Output 1</span></p>
+<pre style='font-family: courier new'>
+HH      HH  KK    KK    OOOOOO    IIIIIIIIII
+HH      HH  KK    KK    OOOOOO    IIIIIIIIII
+HH      HH  KK  KK    OO      OO      II    
+HH      HH  KK  KK    OO      OO      II    
+HHHHHHHHHH  KKKK      OO      OO      II    
+HHHHHHHHHH  KKKK      OO      OO      II    
+HH      HH  KK  KK    OO      OO      II    
+HH      HH  KK  KK    OO      OO      II    
+HH      HH  KK    KK    OOOOOO    IIIIIIIIII
+HH      HH  KK    KK    OOOOOO    IIIIIIIIII
+</pre>
+   <p dir="ltr" style="text-align: left;   "><span style="font-weight: bold">Sample Input 2</span></p>
+<pre style='font-family: courier new'>
+5 3 4
+12345
+a b c
+ SICX
+</pre>
+
+   <p dir="ltr" style="text-align: left;   "><span style="font-weight: bold">Sample Output 2</span></p>
+<pre style='font-family: courier new'>
+11112222333344445555
+11112222333344445555
+11112222333344445555
+11112222333344445555
+aaaa    bbbb    cccc
+aaaa    bbbb    cccc
+aaaa    bbbb    cccc
+aaaa    bbbb    cccc
+    SSSSIIIICCCCXXXX
+    SSSSIIIICCCCXXXX
+    SSSSIIIICCCCXXXX
+    SSSSIIIICCCCXXXX
+</pre>
+  </div>
+ </body>
+</html>

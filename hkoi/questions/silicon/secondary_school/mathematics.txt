@@ -1,0 +1,17 @@
+Back to secondary school mathematics.
+
+You are given a polynomial with a degree of N. Your task is to find all the roots of the polynomial, given the following constraints:
+
+- 1000 >= N > 0
+- The polynomial has N real, integral, distinct roots.
+- All the coefficients of the polynomial are within the range -2^30 to 2^30
+
+Input:
+
+The first line the input consists of a single integer, N.
+The next N+1 lines are the coefficients, from the coefficient from x^n to the constant term of the polynomial.
+
+Output:
+
+Output the roots in ascending order, one on each line.
+

@@ -1,0 +1,27 @@
+echo 'A' | ./manlovelystring > Z1 && echo 'A' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'B' | ./manlovelystring > Z1 && echo 'B' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'C' | ./manlovelystring > Z1 && echo 'C' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'D' | ./manlovelystring > Z1 && echo 'D' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'E' | ./manlovelystring > Z1 && echo 'E' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'F' | ./manlovelystring > Z1 && echo 'F' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'G' | ./manlovelystring > Z1 && echo 'G' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'H' | ./manlovelystring > Z1 && echo 'H' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'I' | ./manlovelystring > Z1 && echo 'I' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'J' | ./manlovelystring > Z1 && echo 'J' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'K' | ./manlovelystring > Z1 && echo 'K' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'L' | ./manlovelystring > Z1 && echo 'L' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'M' | ./manlovelystring > Z1 && echo 'M' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'N' | ./manlovelystring > Z1 && echo 'N' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'O' | ./manlovelystring > Z1 && echo 'O' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'P' | ./manlovelystring > Z1 && echo 'P' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'Q' | ./manlovelystring > Z1 && echo 'Q' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'R' | ./manlovelystring > Z1 && echo 'R' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'S' | ./manlovelystring > Z1 && echo 'S' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'T' | ./manlovelystring > Z1 && echo 'T' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'U' | ./manlovelystring > Z1 && echo 'U' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'V' | ./manlovelystring > Z1 && echo 'V' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'W' | ./manlovelystring > Z1 && echo 'W' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'X' | ./manlovelystring > Z1 && echo 'X' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'Y' | ./manlovelystring > Z1 && echo 'Y' | ./lovelystring > Z2 && diff Z1 Z2
+echo 'Z' | ./manlovelystring > Z1 && echo 'Z' | ./lovelystring > Z2 && diff Z1 Z2
+

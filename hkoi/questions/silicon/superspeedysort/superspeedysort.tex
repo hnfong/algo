@@ -1,0 +1,45 @@
+\documentclass{article}
+
+\usepackage{trainingtask}
+
+\begin{document}
+\ctitle{Super Speedy Sort}
+
+\begin{center}
+Time limit: 4 seconds
+\end{center}
+
+\csubsection{Description}
+\par We define the sequence \textbf{S}(n) = \textit{a}*\textit{n} mod
+\textit{b}, with a length of \textit{m}, where \textit{a}, \textit{b},
+\textit{m} are given. For example, if \textit{a} = 4, \textit{b} = 11,
+\textit{m} = 5, then \textbf{S} = \{ 4, 8, 1, 5, 9 \}.  We define
+another sequence \textbf{T} as a sorted version of \textbf{S}. Following the
+above example, \textbf{T}(n)
+= \{ 1, 4, 5, 8, 9 \}. The problem is, given \textit{a}, \textit{b}, \textit{m}, and a list of integers
+$i_1,i_2,i_3,..i_k$, you are to find the values of
+$T(i_1),T(i_2),T(i_3)..T(i_k)$.
+
+\csubsection{Input}
+\par The first line of input consists of 3 integers, \textit{a}, \textit{b},
+\textit{m}, and \textit{k}. $0 < a,b
+<$
+$2^{30}$, $0 < m \leq 2 000 000$, $0 < k \leq 1000$. The next k lines each contains an integer
+representing $i_1,i_2,i_3..i_k$. $0 < i_1,i_2,i_3..i_k \leq \textit{m}$.
+
+\csubsection{Output}
+\par The output should have k lines, the first line with the value of $T(i_1)$,
+the second line with $T(i_2)$, the third line with $T(i_3)$, etc.
+
+\csubsection{Sample Input}
+\begin{verbatim}
+4 11 5 2
+2
+5
+\end{verbatim}
+
+\csubsection{Sample Output}
+\begin{verbatim}
+4
+9
+\end{verbatim}

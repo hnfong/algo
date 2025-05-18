@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE abiword PUBLIC "-//ABISOURCE//DTD AWML 1.0 Strict//EN" "http://www.abisource.com/awml.dtd">
+<abiword xmlns="http://www.abisource.com/awml.dtd" xmlns:awml="http://www.abisource.com/awml.dtd" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns:math="http://www.w3.org/1998/Math/MathML" xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.0.3" fileformat="1.0" styles="unlocked">
+<!-- =====================================================================  -->
+<!-- This file is an AbiWord document.                                      -->
+<!-- AbiWord is a free, Open Source word processor.                         -->
+<!-- You may obtain more information about AbiWord at www.abisource.com     -->
+<!-- You should not edit this file by hand.                                 -->
+<!-- =====================================================================  -->
+
+<styles>
+<s type="P" name="Normal" basedon="" followedby="Current Settings" props="font-family:Times New Roman; dom-dir:ltr; font-style:normal; margin-left:0pt; text-indent:0in; margin-top:0pt; text-position:normal; font-weight:normal; font-variant:normal; color:000000; text-decoration:none; line-height:1.000000; margin-bottom:0pt; text-align:left; margin-right:0pt; bgcolor:transparent; font-size:12pt; widows:2; font-stretch:normal"/>
+</styles>
+<pagesize pagetype="Letter" orientation="portrait" width="8.500000" height="11.000000" units="in" page-scale="1.000000"/>
+<section>
+<p style="Normal" props="text-align:center"><c props="lang:en-US; font-size:14pt; font-weight:bold">Gem Quest</c></p>
+<p style="Normal"><c props="lang:en-US"></c></p>
+<p style="Normal"><c props="font-weight:bold; lang:en-US">Introduction</c></p>
+<p style="Normal"><c props="lang:en-US"></c></p>
+<p style="Normal" props="text-align:justify"><c props="lang:en-US">The B race is a legendary race who likes to collect gems. To assist them in collecting gems, they have constructed a machine, dubbed B's Finder (BF). BF is designed &amp; programmed by B race's top engineers. Originally, BF was designed only to collect gems, but after a few experiments, the engineers find that gems will start to decay when carried by BF unless BF has sufficient gold coins. So BF is also programmed to collect gold coins.</c></p>
+<p style="Normal" props="text-align:justify"><c props="lang:en-US"></c></p>
+<p style="Normal" props="text-align:justify"><c props="lang:en-US">The BF engineers have produced an algorithm they call Gem First Search (GFS), which is named after the fact that BF prefers to collect gems over gold coins. The details of the BF GFS algorithm is as follows:</c></p>
+<p style="Normal" props="text-align:justify"><c props="lang:en-US"></c></p>
+<p style="Normal"><c props="lang:en-US">BF will consider the following in each of its move:</c></p>
+<p style="Normal" props="text-align:justify"><c props="lang:en-US"></c></p>
+<p style="Normal" props="text-align:justify"><c props="lang:en-US">1. Look in the 4 directions, in the order North, East, South, West</c></p>
+<p style="Normal" props="text-align:justify"><c props="lang:en-US">2. If a gem is found, immediately move to that direction to collect it</c></p>
+<p style="Normal" props="text-align:justify"><c props="lang:en-US">3. Look in the 4 directions again, in the order North, East, South, West</c></p>
+<p style="Normal" props="text-align:justify"><c props="lang:en-US">4. If a gold coin is found, immediately move in that direction to collect it</c></p>
+<p style="Normal" props="text-align:justify"><c props="lang:en-US">5. If no gem nor gold coin is found, cease all operations.</c></p>
+<p style="Normal" props="text-align:justify"><c props="lang:en-US"></c></p>
+<p style="Normal" props="text-align:justify"><c props="font-weight:bold; lang:en-US">Task</c></p>
+<p style="Normal" props="text-align:justify"><c props="lang:en-US"></c></p>
+<p style="Normal"><c props="lang:en-US">Your task is to write a program which emulates BF and to find the number of gems and coins it can collect before it reaches step 5.</c></p>
+<p style="Normal"><c props="lang:en-US"></c></p>
+<p style="Normal"><c props="font-weight:bold; lang:en-US">Input</c></p>
+<p style="Normal" props="text-align:justify"><c props="lang:en-US"></c></p>
+<p style="Normal" props="text-align:justify"><c props="lang:en-US">On the first line of the input file, GEM.IN, you will be given an integer </c><c props="lang:en-US; font-weight:bold; font-style:italic">n</c><c props="font-family:Times New Roman; font-size:12pt; color:000000; text-decoration:none; text-position:normal; font-weight:normal; font-style:normal; lang:en-US"> ( 1 &lt;= </c><c props="font-family:Times New Roman; font-size:12pt; color:000000; text-decoration:none; text-position:normal; font-weight:bold; font-style:italic; lang:en-US">n</c><c props="font-family:Times New Roman; font-size:12pt; color:000000; text-decoration:none; text-position:normal; font-weight:normal; font-style:normal; lang:en-US"> &lt;= 10 )</c><c props="lang:en-US; font-weight:normal; font-style:normal">,  indicating the size of the map. Following will be a</c><c props="lang:en-US; font-weight:normal; font-family:Times New Roman; font-style:normal"> </c><c props="lang:en-US; font-weight:bold; font-family:Times New Roman; font-style:italic">n</c><c props="lang:en-US; font-weight:normal; font-family:Times New Roman; font-style:normal"> x </c><c props="lang:en-US; font-weight:bold; font-family:Times New Roman; font-style:italic">n</c><c props="lang:en-US; font-weight:normal; font-family:Times New Roman; font-style:normal"> map, i.e. </c><c props="lang:en-US; font-weight:bold; font-family:Times New Roman; font-style:italic">n</c><c props="lang:en-US; font-weight:normal; font-family:Times New Roman; font-style:normal"> lines with </c><c props="lang:en-US; font-weight:bold; font-family:Times New Roman; font-style:italic">n</c><c props="lang:en-US; font-weight:normal; font-family:Times New Roman; font-style:normal"> characters each, as demonstrated in the input. Each character will either be 'B', '0', 'G', or '$', representing the starting point of BF, an empty space, a gem and a gold coin respectively.</c></p>
+<p style="Normal" props="text-align:justify"><c props="lang:en-US; font-weight:normal; font-family:Times New Roman; font-style:normal"></c></p>
+<p style="Normal"><c props="lang:en-US; font-weight:bold; font-family:Times New Roman; font-style:normal">Output</c></p>
+<p style="Normal"><c props="lang:en-US; font-weight:normal; font-family:Times New Roman; font-style:normal"></c></p>
+<p style="Normal"><c props="lang:en-US; font-weight:normal; font-family:Times New Roman; font-style:normal">The output file, GEM.OUT should only contain two integers, representing the number of gems collected and gold coins collected respectively.</c></p>
+<p style="Normal"><c props="lang:en-US; font-weight:normal; font-family:Times New Roman; font-style:normal"><pbr/></c></p>
+<p style="Normal"><c props="lang:en-US; font-weight:bold; font-family:Times New Roman; font-style:normal">Sample Input</c></p>
+<p style="Normal"><c props="lang:en-US; font-weight:normal; font-family:Times New Roman; font-style:normal"></c></p>
+<p style="Normal"><c props="lang:en-US; font-weight:normal; font-family:Times New Roman; font-style:normal">8</c></p>
+<p style="Normal"><c props="font-family:Courier New; text-decoration:none; color:000000; font-size:12pt; text-position:normal; font-weight:normal; font-style:normal; lang:en-US">0000G$00</c></p>
+<p style="Normal" props="margin-top:0.0000in; margin-left:0.0000in; text-indent:0.0000in; margin-bottom:0.0000in; line-height:1.000000; text-align:left; margin-right:0.0000in"><c props="font-family:Courier New; text-decoration:none; color:000000; font-size:12pt; text-position:normal; font-weight:normal; font-style:normal; lang:en-US">0BGGGGG0</c></p>
+<p style="Normal" props="margin-top:0.0000in; margin-left:0.0000in; text-indent:0.0000in; margin-bottom:0.0000in; line-height:1.000000; text-align:left; margin-right:0.0000in"><c props="font-family:Courier New; text-decoration:none; color:000000; font-size:12pt; text-position:normal; font-weight:normal; font-style:normal; lang:en-US">0GGGG$G0</c></p>
+<p style="Normal" props="margin-top:0.0000in; margin-left:0.0000in; text-indent:0.0000in; margin-bottom:0.0000in; line-height:1.000000; text-align:left; margin-right:0.0000in"><c props="font-family:Courier New; text-decoration:none; color:000000; font-size:12pt; text-position:normal; font-weight:normal; font-style:normal; lang:en-US">00G0G0G0</c></p>
+<p style="Normal" props="margin-top:0.0000in; margin-left:0.0000in; text-indent:0.0000in; margin-bottom:0.0000in; line-height:1.000000; text-align:left; margin-right:0.0000in"><c props="font-family:Courier New; text-decoration:none; color:000000; font-size:12pt; text-position:normal; font-weight:normal; font-style:normal; lang:en-US">00$0GGG0</c></p>
+<p style="Normal" props="margin-top:0.0000in; margin-left:0.0000in; text-indent:0.0000in; margin-bottom:0.0000in; line-height:1.000000; text-align:left; margin-right:0.0000in"><c props="font-family:Courier New; text-decoration:none; color:000000; font-size:12pt; text-position:normal; font-weight:normal; font-style:normal; lang:en-US">00G$$$$0</c></p>
+<p style="Normal" props="margin-top:0.0000in; margin-left:0.0000in; text-indent:0.0000in; margin-bottom:0.0000in; line-height:1.000000; text-align:left; margin-right:0.0000in"><c props="font-family:Courier New; text-decoration:none; color:000000; font-size:12pt; text-position:normal; font-weight:normal; font-style:normal; lang:en-US">00000G00</c></p>
+<p style="Normal" props="margin-top:0.0000in; margin-left:0.0000in; text-indent:0.0000in; margin-bottom:0.0000in; line-height:1.000000; text-align:left; margin-right:0.0000in"><c props="font-family:Courier New; text-decoration:none; color:000000; font-size:12pt; text-position:normal; font-weight:normal; font-style:normal; lang:en-US">0$$$$$00</c></p>
+<p style="Normal" props="margin-top:0.0000in; margin-left:0.0000in; text-indent:0.0000in; margin-bottom:0.0000in; line-height:1.000000; text-align:left; margin-right:0.0000in"><c props="font-family:Times New Roman; font-size:12pt; color:000000; text-decoration:none; text-position:normal; font-weight:normal; font-style:normal; lang:en-US"></c></p>
+<p style="Normal" props="margin-top:0.0000in; margin-left:0.0000in; text-indent:0.0000in; margin-bottom:0.0000in; line-height:1.000000; text-align:left; margin-right:0.0000in"><c props="font-family:Times New Roman; text-decoration:none; color:000000; font-size:12pt; text-position:normal; font-weight:bold; font-style:normal; lang:en-US">Sample Output</c></p>
+<p style="Normal" props="margin-top:0.0000in; margin-left:0.0000in; text-indent:0.0000in; margin-bottom:0.0000in; line-height:1.000000; text-align:left; margin-right:0.0000in"><c props="font-family:Times New Roman; font-size:12pt; color:000000; text-decoration:none; text-position:normal; font-weight:normal; font-style:normal; lang:en-US">18 10</c></p>
+<p style="Normal" props="margin-top:0.0000in; margin-left:0.0000in; text-indent:0.0000in; margin-bottom:0.0000in; line-height:1.000000; text-align:left; margin-right:0.0000in"><c props="font-family:Times New Roman; font-size:12pt; color:000000; text-decoration:none; text-position:normal; font-weight:normal; font-style:normal; lang:en-US"></c></p>
+</section>
+</abiword>

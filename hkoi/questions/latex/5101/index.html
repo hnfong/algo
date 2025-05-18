@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2K.1beta (1.48)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>5101</TITLE>
+<META NAME="description" CONTENT="5101">
+<META NAME="keywords" CONTENT="5101">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="Generator" CONTENT="LaTeX2HTML v2K.1beta">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="5101.css">
+
+</HEAD>
+
+<BODY >
+Super Speedy Sort
+
+<P>
+<DIV ALIGN="CENTER">
+Time limit: 4 seconds
+
+</DIV>
+
+<P>
+Description
+
+<P>
+We define the sequence <B>S</B>(n) = <I>a</I>*<I>n</I> mod
+<I>b</I>, with a length of <I>m</I>, where <I>a</I>, <I>b</I>,
+<I>m</I> are given. For example, if <I>a</I> = 4, <I>b</I> = 11,
+<I>m</I> = 5, then <B>S</B> = { 4, 8, 1, 5, 9 }.  We define
+another sequence <B>T</B> as a sorted version of <B>S</B>. Following the
+above example, <B>T</B>(n)
+= { 1, 4, 5, 8, 9 }. The problem is, given <I>a</I>, <I>b</I>, <I>m</I>, and a list of integers
+<!-- MATH
+ $i_1,i_2,i_3,..i_k$
+ -->
+<IMG
+ WIDTH="85" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$i_1,i_2,i_3,..i_k$">, you are to find the values of
+<!-- MATH
+ $T(i_1),T(i_2),T(i_3)..T(i_k)$
+ -->
+<IMG
+ WIDTH="174" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$T(i_1),T(i_2),T(i_3)..T(i_k)$">.
+
+<P>
+Input
+
+<P>
+The first line of input consists of 3 integers, <I>a</I>, <I>b</I>,
+<I>m</I>, and <I>k</I>. <IMG
+ WIDTH="72" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$0 &lt; a,b
+&lt;$">
+<IMG
+ WIDTH="26" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$2^{30}$">, <!-- MATH
+ $0 < m \leq 2 000 000$
+ -->
+<IMG
+ WIDTH="124" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$0 &lt; m \leq 2 000 000$">, <!-- MATH
+ $0 < k \leq 1000$
+ -->
+<IMG
+ WIDTH="95" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$0 &lt; k \leq 1000$">. The next k lines each contains an integer
+representing <!-- MATH
+ $i_1,i_2,i_3..i_k$
+ -->
+<IMG
+ WIDTH="78" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$i_1,i_2,i_3..i_k$">. <!-- MATH
+ $0 < i_1,i_2,i_3..i_k \leq \textit{m}$
+ -->
+<IMG
+ WIDTH="142" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$0 &lt; i_1,i_2,i_3..i_k \leq \textit{m}$">.
+
+<P>
+Output
+
+<P>
+The output should have k lines, the first line with the value of <IMG
+ WIDTH="41" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$T(i_1)$">,
+the second line with <IMG
+ WIDTH="41" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$T(i_2)$">, the third line with <IMG
+ WIDTH="41" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$T(i_3)$">, etc.
+
+<P>
+Sample Input
+<PRE>
+4 11 5 2
+2
+5
+</PRE>
+
+<P>
+Sample Output
+<PRE>
+4
+9
+</PRE>
+<BR><HR>
+<ADDRESS>
+Sidney
+2003-03-29
+</ADDRESS>
+</BODY>
+</HTML>
